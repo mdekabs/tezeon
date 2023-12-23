@@ -6,10 +6,10 @@ $(function () {
         },
         submitSuccess: function ($form, event) {
             event.preventDefault();
-            var name = $("input#name").val();
-            var email = $("input#email").val();
-            var subject = $("input#subject").val();
-            var message = $("textarea#message").val();
+            var name = $("Mawoda").val();
+            var email = $("1mawoda@gmail.com").val();
+            var subject = $("Enquiry").val();
+            var message = $("").val();
 
             $this = $("#sendMessageButton");
             $this.prop("disabled", true);
