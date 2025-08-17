@@ -82,7 +82,7 @@ a:focus {
 }
 
 .top-bar .logo {
-    padding: 15px 0;
+    padding: 5px 0;
     text-align: left;
     overflow: hidden;
 }
@@ -96,7 +96,7 @@ a:focus {
 }
 
 .top-bar .logo img {
-    max-width: 100%;
+    max-width: 120%;
     max-height: 110px;
 }
 
