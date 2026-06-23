@@ -1191,21 +1191,42 @@ a:focus {
 }
 
 #videoModal .modal-dialog {
-    position: relative;
     max-width: 800px;
     margin: 60px auto 0 auto;
+    width: calc(100% - 30px);
+}
+
+#videoModal .modal-content {
+    background: #000;
+    border: none;
+    border-radius: 0;
 }
 
 #videoModal .modal-body {
-    position: relative;
-    padding: 0px;
+    padding: 0;
+    line-height: 0;
+}
+
+/* Responsive video container — shrinks to fit any viewport */
+.video-container {
+    width: 100%;
+    background: #000;
+}
+
+.video-container video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    background: #000;
 }
 
 #videoModal .close {
     position: absolute;
     width: 30px;
     height: 30px;
-    right: 0px;
+    right: 0;
     top: -30px;
     z-index: 999;
     font-size: 30px;
@@ -1213,6 +1234,16 @@ a:focus {
     color: #ffffff;
     background: #000000;
     opacity: 1;
+    line-height: 1;
+}
+
+@media (max-width: 575.98px) {
+    #videoModal .modal-dialog {
+        margin: 30px auto 0 auto;
+    }
+    .video-container video {
+        max-height: 70vh;
+    }
 }
 
 

@@ -62,6 +62,9 @@
 
         $(document).on('click', '.btn-play', function () {
             videoSrc = $(this).data('src');
+            var poster = $(this).data('poster') || '';
+            var vid = document.getElementById('video');
+            if (vid && poster) vid.poster = poster;
         });
 
         $('#videoModal').on('shown.bs.modal', function () {
