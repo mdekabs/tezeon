@@ -199,7 +199,7 @@ export const SERVICES: readonly Service[] = [
 ];
 
 export const SHOWCASE_VIDEO = {
-  src: "https://res.cloudinary.com/dodf7s2r2/video/upload/v1782215493/IMG_6785_yxakfa.mov",
+  src: "https://res.cloudinary.com/dodf7s2r2/video/upload/f_mp4/v1782215493/IMG_6785_yxakfa.mp4",
   poster: COMPANY.logo,
   caption: "Watch This Space For Our Ongoing Project",
 } as const;
