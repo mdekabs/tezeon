@@ -40,7 +40,7 @@ export function VideoShowcase() {
           type="button"
           aria-label="Play ongoing project video"
           onClick={() => setOpen(true)}
-          className="relative z-10 grid place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/60"
+          className="relative z-10 grid aspect-square place-items-center rounded-full outline-none focus-visible:ring-4 focus-visible:ring-primary/60"
           style={{ width: 100, height: 100 }}
         >
           {/* Ring 1 (legacy ::before) — solid gold disc */}
