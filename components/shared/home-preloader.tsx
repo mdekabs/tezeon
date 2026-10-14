@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useScrollLock } from "@/hooks/use-scroll-lock";
 import { PRELOADER_HARD_CAP_MS, PRELOADER_MIN_DURATION_MS } from "@/lib/animations";
@@ -13,6 +13,13 @@ gsap.registerPlugin(useGSAP);
 export function HomePreloader() {
   const scopeRef = useRef<HTMLDivElement>(null);
   const [dismissed, setDismissed] = useState(false);
+
+  // The legacy animation is decorative; never let it block the application if
+  // a browser delays `load`, autoplay, or GSAP's completion callback.
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setDismissed(true), PRELOADER_HARD_CAP_MS + 250);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
   useScrollLock(!dismissed);
 

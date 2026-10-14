@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The legacy site is retained as a visual reference and includes vendored
+    // browser libraries that are not part of the Next.js application bundle.
+    "legacy/**",
   ]),
 ]);
 
