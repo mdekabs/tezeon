@@ -1,0 +1,448 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+ * Design tokens — LEGACY-EXACT PALETTE
+ * Every value below is transcribed directly from tezeon/css/style.css
+ * ------------------------------------------------------------------------- */
+@theme {
+  /* Core brand (unchanged) */
+  --color-primary: #fdbe33;
+  --color-primary-strong: #e2a51d;
+  --color-dark: #030f27;
+  --color-dark-soft: #0d1b33;
+  --color-nav: #343a40;
+  --color-body: #555f6e;           /* legacy body text */
+  --color-muted: #666666;
+  --color-light: #f5f5f5;
+
+  /* Legacy semantic aliases */
+  --color-brand-gold: #fdbe33;
+  --color-brand-gold-hover: #e5aa2d;
+  --color-brand-gold-deep: #c9911e;
+  --color-brand-gold-subtle: rgba(253, 190, 51, 0.12);
+  --color-brand-navy: #030f27;
+  --color-brand-navy-surface: #07193f;
+
+  /* Cyan accent used in top-bar, nav wrapper, page-header */
+  --color-cyan: #33d0fd;
+
+  /* Section backgrounds — legacy gradients */
+  --color-body-bg-start: #eef4ff;
+  --color-body-bg-mid: #f5f8ff;
+  --color-body-bg-end: #eaf1fb;
+
+  --color-page-header-start: #33d0fd;
+  --color-page-header-mid: #b7e3ee;
+  --color-page-header-end: #e0eff1;
+
+  --color-faq-bg-start: #edf4ff;
+  --color-faq-bg-mid: #f8fbff;
+  --color-faq-bg-end: #ffffff;
+
+  --color-fact-left-start: #030f27;
+  --color-fact-left-mid: #051a3a;
+  --color-fact-left-end: #0a1e3d;
+
+  --color-fact-right-start: #fdbe33;
+  --color-fact-right-mid: #ffcb4a;
+  --color-fact-right-end: #ffe596;
+
+  --color-feature-navy-start: #030f27;
+  --color-feature-navy-mid: #051a3a;
+  --color-feature-navy-end: #0a1e3d;
+
+  --color-feature-gold-start: #fdbe33;
+  --color-feature-gold-mid: #ffcb4a;
+  --color-feature-gold-end: #ffe080;
+
+  --color-service-bg-start: #f0f7ff;
+  --color-service-bg-mid: #e8f2ff;
+  --color-service-bg-end: #f5f9ff;
+
+  --color-team-bg-start: #f5f9ff;
+  --color-team-bg-mid: #eaeffb;
+  --color-team-bg-end: #f0f6ff;
+
+  --color-testimonial-overlay: rgba(3, 15, 39, 0.9);
+  --color-video-showcase-bg: #030f27;
+
+  /* Preloader palette */
+  --color-preloader-bg-start: #020c20;
+  --color-preloader-bg-mid: #030f27;
+  --color-preloader-bg-end: #0a1e3d;
+  --color-preloader-bubble: rgba(253, 190, 51, 0.1);
+  --color-preloader-drop-start: rgba(175, 230, 255, 0.96);
+  --color-preloader-drop-mid: rgba(40, 130, 230, 0.88);
+  --color-preloader-drop-end: rgba(10, 55, 155, 0.92);
+  --color-preloader-ring-1: rgba(40, 150, 255, 0.7);
+  --color-preloader-ring-2: rgba(110, 185, 255, 0.52);
+  --color-preloader-ring-3: rgba(170, 215, 255, 0.36);
+  --color-preloader-wave-1: rgba(253, 190, 51, 0.07);
+  --color-preloader-wave-2: rgba(30, 100, 220, 0.09);
+
+  /* Gold gradient stops */
+  --color-gold-start: #fdbe33;
+  --color-gold-mid: #e5aa2d;
+  --color-gold-end: #c9911e;
+  --color-gold-deep: #c9911e;
+}
+
+@theme inline {
+  --font-sans: var(--font-poppins), -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Global: legacy uses square corners everywhere (22 radius-0 declarations) */
+* {
+  border-radius: 0;
+}
+
+/* Animations — legacy keyframes mapped to Tailwind */
+@theme {
+  --animate-fade-up: fade-up 0.9s ease-out both;
+  --animate-fade-in: fade-in 0.9s ease-out both;
+  --animate-slide-in-left: slide-in-left 0.9s ease-out both;
+  --animate-slide-in-right: slide-in-right 0.9s ease-out both;
+  --animate-hero-progress: hero-progress 7s linear forwards;  /* legacy 7s interval */
+  --animate-wave-shift: wave-shift 8s linear infinite;        /* legacy 8s */
+  --animate-wave-shift-reverse: wave-shift-reverse 11s linear infinite; /* legacy 11s reverse */
+  --animate-bubble-rise: bubble-rise-legacy 7.5s linear infinite; /* legacy 6.8-10.5s range */
+  --animate-status-pulse: status-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse-border: pulse-border 1.5s ease-out infinite; /* video modal rings */
+  --animate-shimmer: tez-shimmer 1.4s ease-in-out infinite;    /* gallery shimmer */
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes hero-progress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+@keyframes wave-shift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes wave-shift-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* Legacy bubble rise: -110vh over 6.8-10.5s, opacity 0→0.6→0.25→0 */
+@keyframes bubble-rise-legacy {
+  0%   { transform: translateY(0) scale(1);     opacity: 0; }
+  10%  { opacity: 0.6; }
+  85%  { opacity: 0.25; }
+  100% { transform: translateY(-110vh) scale(0.65); opacity: 0; }
+}
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+@keyframes pulse-border {
+  0%   { transform: translateX(-50%) translateY(-50%) scale(1); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-50%) scale(1.5); opacity: 0; }
+}
+@keyframes tez-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Legacy page-load entrance animations */
+@keyframes tez-slide-down {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tez-fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tez-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================
+   LEGACY SECTION BACKGROUNDS (utility classes)
+   ============================================ */
+@utility bg-body-gradient {
+  background: linear-gradient(160deg, var(--color-body-bg-start) 0%, var(--color-body-bg-mid) 50%, var(--color-body-bg-end) 100%);
+  background-attachment: fixed;
+}
+@utility bg-page-header-gradient {
+  background: linear-gradient(135deg, var(--color-page-header-start) 0%, var(--color-page-header-mid) 50%, var(--color-page-header-end) 100%);
+}
+@utility bg-faq-gradient {
+  background: linear-gradient(180deg, var(--color-faq-bg-start) 0%, var(--color-faq-bg-mid) 50%, var(--color-faq-bg-end) 100%);
+}
+@utility bg-fact-left-gradient {
+  background: linear-gradient(135deg, var(--color-fact-left-start) 0%, var(--color-fact-left-mid) 55%, var(--color-fact-left-end) 100%);
+}
+@utility bg-fact-right-gradient {
+  background: linear-gradient(135deg, var(--color-fact-right-start) 0%, var(--color-fact-right-mid) 55%, var(--color-fact-right-end) 100%);
+}
+@utility bg-feature-navy-gradient {
+  background: linear-gradient(135deg, var(--color-feature-navy-start) 0%, var(--color-feature-navy-mid) 55%, var(--color-feature-navy-end) 100%);
+}
+@utility bg-feature-gold-gradient {
+  background: linear-gradient(135deg, var(--color-feature-gold-start) 0%, var(--color-feature-gold-mid) 50%, var(--color-feature-gold-end) 100%);
+}
+@utility bg-service-gradient {
+  background: linear-gradient(160deg, var(--color-service-bg-start) 0%, var(--color-service-bg-mid) 60%, var(--color-service-bg-end) 100%);
+}
+@utility bg-team-gradient {
+  background: linear-gradient(155deg, var(--color-team-bg-start) 0%, var(--color-team-bg-mid) 60%, var(--color-team-bg-end) 100%);
+}
+@utility bg-about-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #edf4ff 100%);
+}
+@utility bg-footer-gradient {
+  background: linear-gradient(160deg, var(--color-dark) 0%, #051a3a 50%, #0a1e3d 100%);
+}
+@utility bg-contact-form-gradient {
+  background: linear-gradient(135deg, var(--color-dark) 0%, #0a1e3d 100%);
+}
+@utility bg-video-showcase {
+  background: linear-gradient(rgba(5, 25, 63, 0.788), rgba(34, 52, 88, 0.673)), url('https://res.cloudinary.com/dxd3nmbag/image/upload/v1755441476/waterlog_lnxqbb.png');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@utility bg-testimonial {
+  background: linear-gradient(var(--color-testimonial-overlay), var(--color-testimonial-overlay)), url('https://res.cloudinary.com/dxd3nmbag/image/upload/v1703285075/drilling_cux1bb.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* ============================================
+   GLASSMORPHISM UTILITIES (legacy spec)
+   ============================================ */
+@utility glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 8px 32px 0 rgba(3, 15, 39, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+}
+@utility glass-panel-dark {
+  background: rgba(3, 15, 39, 0.75);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px 0 rgba(3, 15, 39, 0.28),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+}
+@utility glass-nav {
+  background: rgba(3, 15, 39, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.22);
+}
+@utility glass-overlay {
+  background: rgba(3, 15, 39, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+@utility glass-overlay-strong {
+  background: rgba(3, 15, 39, 0.7);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+}
+@utility glass-label {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+}
+@utility glass-sub-label {
+  background: rgba(253, 190, 51, 0.10);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(253, 190, 51, 0.28);
+  border-radius: 20px;
+}
+@utility glass-scrumb {
+  background: linear-gradient(to top, rgba(3,15,39,0.55) 0%, transparent 55%);
+}
+
+/* ============================================
+   HAIRLINE DIVIDER (footer menu)
+   ============================================ */
+@utility hairline-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+}
+@utility hairline-divider-white-10 {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+@utility hairline-divider-gold {
+  width: 1px;
+  height: 100%;
+  background: var(--color-primary);
+}
+
+/* ============================================
+   CONTAINER UTILITY (legacy .wrapper max-width 1366px)
+   ============================================ */
+@utility container-x {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 85rem; /* 1360px ≈ legacy 1366px */
+  padding-inline: 1rem;
+  @media (width >= 640px) { padding-inline: 1.5rem; }
+  @media (width >= 1024px) { padding-inline: 2rem; }
+}
+
+/* ============================================
+   BTN BASE (square, legacy .btn)
+   ============================================ */
+@utility btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+@utility btn-primary {
+  background: linear-gradient(90deg, var(--color-gold-start) 0%, var(--color-gold-mid) 50%, var(--color-gold-end) 100%);
+  color: var(--color-dark);
+  box-shadow: 0 4px 16px 0 rgba(253, 190, 51, 0.35);
+  &:hover {
+    background: linear-gradient(90deg, var(--color-gold-mid) 0%, var(--color-gold-end) 50%, var(--color-gold-deep) 100%);
+    box-shadow: 0 6px 20px 0 rgba(253, 190, 51, 0.45);
+    transform: translateY(-2px);
+  }
+}
+@utility btn-outline {
+  border: 2px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-dark);
+  &:hover {
+    background: var(--color-primary);
+    color: var(--color-dark);
+  }
+}
+@utility btn-outline-light {
+  border: 2px solid var(--color-primary);
+  background: transparent;
+  color: white;
+  &:hover {
+    background: var(--color-primary);
+    color: var(--color-dark);
+  }
+}
+@utility btn-dark {
+  background: var(--color-dark);
+  color: white;
+  &:hover {
+    background: var(--color-primary);
+    color: var(--color-dark);
+  }
+}
+@utility btn-square-lg {
+  width: 3.75rem; /* 60px */
+  height: 3.75rem;
+  padding: 0;
+  font-size: 3.75rem; /* 60px */
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-dark);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Honour OS-level motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Apple: respond on pointer-down, not release — instant press feedback.
+   transform/opacity are compositor-friendly and never affect layout. */
+@media (prefers-reduced-motion: no-preference) {
+  button:active,
+  a:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Apple: respect reduced-transparency — frost glass surfaces solid. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass-panel-dark {
+    background: rgba(3, 15, 39, 0.97);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* HiDPI-safe crisp hairlines used by glass surfaces */
+@media (prefers-contrast: more) {
+  .glass-panel {
+    background: #ffffff;
+    backdrop-filter: none;
+    border-color: #030f27;
+  }
+  .glass-panel-dark {
+    background: #030f27;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+}
