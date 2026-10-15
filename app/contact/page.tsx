@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     "borehole quote Nigeria",
     "water services consultation",
   ],
-  alternates: { canonical: "/contact/" },
+  alternates: { canonical: "/contact" },
   openGraph: {
-    url: "/contact/",
+    url: "/contact",
     images: [{ url: COMPANY.logo, alt: COMPANY.name }],
     title: `Contact ${COMPANY.name} | Lagos Water Engineering`,
     description:

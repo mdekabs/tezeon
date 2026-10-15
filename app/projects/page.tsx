@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     "water filtration portfolio",
     "reservoir projects Nigeria",
   ],
-  alternates: { canonical: "/projects/" },
+  alternates: { canonical: "/projects" },
   openGraph: {
-    url: "/projects/",
+    url: "/projects",
     images: [{ url: COMPANY.logo, alt: COMPANY.name }],
     title: "Our Projects | Tezeon Services Limited",
     description:

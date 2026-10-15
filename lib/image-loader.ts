@@ -3,10 +3,9 @@ import type { ImageLoaderProps } from "next/image";
 const CLOUDINARY_UPLOAD = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/(?:image|video)\/upload\/)(.+)$/;
 
 /**
- * `next/image` loader for the static export (no server-side optimiser).
- * Cloudinary URLs get on-the-fly resizing + automatic format/quality, so each
- * `srcset` entry is a right-sized WebP/AVIF; local `/public` files are served
- * as-is.
+ * `next/image` loader that delegates optimisation to Cloudinary: Cloudinary
+ * URLs get on-the-fly resizing + automatic format/quality, so each `srcset`
+ * entry is a right-sized WebP/AVIF; local `/public` files are served as-is.
  */
 export default function imageLoader({ src, width, quality }: ImageLoaderProps): string {
   const match = CLOUDINARY_UPLOAD.exec(src);

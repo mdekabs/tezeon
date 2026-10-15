@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     "hydrogeological company Lagos",
     "water solutions Nigeria",
   ],
-  alternates: { canonical: "/about/" },
+  alternates: { canonical: "/about" },
   openGraph: {
-    url: "/about/",
+    url: "/about",
     images: [{ url: COMPANY.logo, alt: COMPANY.name }],
     title: ABOUT_TITLE,
     description:
