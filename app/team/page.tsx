@@ -16,9 +16,9 @@ export const metadata: Metadata = {
     "hydrogeologist Lagos",
     "water specialists Nigeria",
   ],
-  alternates: { canonical: "/team" },
+  alternates: { canonical: "/team/" },
   openGraph: {
-    url: "/team",
+    url: "/team/",
     images: [{ url: COMPANY.logo, alt: COMPANY.name }],
     title: "Our Team | Tezeon Services Limited",
     description:

@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     "water treatment plant",
     "home water system",
   ],
-  alternates: { canonical: "/services" },
+  alternates: { canonical: "/services/" },
   openGraph: {
-    url: "/services",
+    url: "/services/",
     images: [{ url: COMPANY.logo, alt: COMPANY.name }],
     title: "Water Engineering Services | Tezeon Services Limited",
     description:

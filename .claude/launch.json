@@ -1,0 +1,44 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "next-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "node_modules/next/dist/bin/next",
+        "dev",
+        "--port",
+        "3000"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "legacy",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "-y",
+        "http-server",
+        "legacy",
+        "-p",
+        "5500",
+        "-c-1",
+        "-s"
+      ],
+      "port": 5500
+    },
+    {
+      "name": "static-export",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "-y",
+        "http-server",
+        "out",
+        "-p",
+        "5600",
+        "-c-1",
+        "-s"
+      ],
+      "port": 5600
+    }
+  ]
+}

@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 
 import { COMPANY } from "@/lib/data";
 
+/* Generated once at build time for the static export. */
+export const dynamic = "force-static";
+
 /**
  * XML sitemap mirroring the legacy `sitemap.xml` route set, priorities and
  * change frequencies.
@@ -17,37 +20,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${base}/about`,
+      url: `${base}/about/`,
       lastModified: new Date("2026-06-04"),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${base}/services`,
+      url: `${base}/services/`,
       lastModified: new Date("2026-06-04"),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: `${base}/projects`,
+      url: `${base}/projects/`,
       lastModified: new Date("2026-06-04"),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: `${base}/team`,
+      url: `${base}/team/`,
       lastModified: new Date("2026-06-04"),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: `${base}/gallery`,
+      url: `${base}/gallery/`,
       lastModified: new Date("2026-06-05"),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${base}/contact`,
+      url: `${base}/contact/`,
       lastModified: new Date("2026-06-04"),
       changeFrequency: "monthly",
       priority: 0.8,
