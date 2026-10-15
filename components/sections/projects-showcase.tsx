@@ -170,15 +170,18 @@ function FeaturedProject({ project }: { project: PortfolioItem }) {
   }, [playing]);
 
   return (
-    <article className="liquid-glass grid gap-4 rounded-[32px] p-3 sm:p-4 lg:grid-cols-[1.45fr_1fr] lg:gap-6">
-      {/* Media */}
-      <div ref={mediaRef} className="relative aspect-video overflow-hidden rounded-[24px] bg-dark">
+    <article className="liquid-glass grid gap-4 rounded-[32px] p-3 sm:p-4 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-8">
+      {/* Media — portrait 3:4 box matching the (cropped) footage, so it fills edge to edge */}
+      <div
+        ref={mediaRef}
+        className="relative mx-auto aspect-[3/4] w-full max-w-[440px] overflow-hidden rounded-[24px] bg-dark md:max-w-none"
+      >
         {project.poster ? (
           <Image
             src={project.poster}
             alt=""
             fill
-            sizes="(min-width: 992px) 620px, 100vw"
+            sizes="(min-width: 768px) 440px, 100vw"
             className="object-cover"
           />
         ) : null}
@@ -220,7 +223,7 @@ function FeaturedProject({ project }: { project: PortfolioItem }) {
                 playsInline
                 preload="metadata"
                 aria-label={project.title}
-                className="size-full object-contain"
+                className="size-full object-cover"
               />
               <button
                 type="button"

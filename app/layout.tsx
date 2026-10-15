@@ -48,7 +48,6 @@ export const metadata: Metadata = {
       "Expert borehole drilling, water filtration, reservoir construction and plumbing across Nigeria. Get a free consultation today.",
     images: [COMPANY.logo],
   },
-  icons: { icon: COMPANY.logo },
 };
 
 /**

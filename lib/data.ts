@@ -190,13 +190,16 @@ export const SERVICES: readonly Service[] = [
 
 /** Client-supplied footage of the current ongoing project (Cloudinary). */
 const ONGOING_PROJECT_ASSET = "v1792072848/ongoing_track01_ekcifm";
+/* The upload is portrait footage letterboxed inside a 1920×1080 frame; crop
+   the baked-in black bars away (826×1080 of real picture, ~3:4). */
+const ONGOING_PROJECT_CROP = "c_crop,x_547,y_0,w_826,h_1080";
 
 export const SHOWCASE_VIDEO = {
   title: "Water Reticulation — Orange Island, Lagos",
-  /* q_auto + 1280px width: ~6 MB instead of the 50 MB original upload. */
-  src: `${CLIENT_VID}/q_auto,w_1280/${ONGOING_PROJECT_ASSET}.mp4`,
+  /* Cropped, q_auto, 720px wide: ~9 MB instead of the 50 MB original. */
+  src: `${CLIENT_VID}/${ONGOING_PROJECT_CROP}/q_auto,w_720/${ONGOING_PROJECT_ASSET}.mp4`,
   /* Cloudinary renders a poster frame when the extension is .jpg. */
-  poster: `${CLIENT_VID}/${ONGOING_PROJECT_ASSET}.jpg`,
+  poster: `${CLIENT_VID}/${ONGOING_PROJECT_CROP}/q_auto,w_720/${ONGOING_PROJECT_ASSET}.jpg`,
   caption: "Watch This Space For Our Ongoing Project",
 } as const;
 

@@ -1,10 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useCloseWhenHidden } from "@/hooks/use-close-when-hidden";
 import { SHOWCASE_VIDEO } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
 /**
  * Ongoing-project teaser — legacy `.video` (style.css:159-174, 1099-1191,
@@ -12,8 +14,9 @@ import { SHOWCASE_VIDEO } from "@/lib/data";
  * and a pulsing gold play button in front of it (client request).
  *
  * The clip plays inline inside the section (client request, replacing the
- * legacy modal) and closes itself — paused and unloaded — as soon as the
- * section is scrolled out of view, or on Escape / the close button.
+ * legacy modal): the band grows to ~90% of the screen, the portrait clip plays
+ * full-height over a blurred fill of its own frame, and it closes itself —
+ * paused and unloaded — once scrolled out of view, or on Escape / close.
  */
 export function VideoShowcase() {
   const [playing, setPlaying] = useState(false);
@@ -32,6 +35,12 @@ export function VideoShowcase() {
     if (playing) videoRef.current?.play().catch(() => undefined);
   }, [playing]);
 
+  const play = (): void => {
+    setPlaying(true);
+    /* The band grows to ~90% of the screen; keep it centred while it does. */
+    window.setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
+  };
+
   const close = (): void => {
     setPlaying(false);
     playButtonRef.current?.focus({ preventScroll: true });
@@ -42,13 +51,16 @@ export function VideoShowcase() {
       ref={sectionRef}
       aria-label="Ongoing project"
       style={{ backgroundPositionY }}
-      className="bg-video-showcase relative my-[45px] h-full min-h-[500px] overflow-hidden"
+      className={cn(
+        "bg-video-showcase relative my-[45px] overflow-hidden transition-[min-height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+        playing ? "min-h-[90svh]" : "min-h-[500px]",
+      )}
     >
       <button
         ref={playButtonRef}
         type="button"
         aria-label={`Play video: ${SHOWCASE_VIDEO.title}`}
-        onClick={() => setPlaying(true)}
+        onClick={play}
         className="play-button absolute top-1/2 left-1/2 z-[2] box-content block h-11 w-8 -translate-1/2 rounded-full pt-[18px] pr-5 pb-[18px] pl-7 outline-none"
       >
         <span
@@ -69,8 +81,17 @@ export function VideoShowcase() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 z-[5] bg-black"
+            className="absolute inset-0 z-[5] overflow-hidden bg-dark"
           >
+            {/* Portrait footage in a landscape band: an enlarged, blurred copy of
+                its frame fills the width so there are no black bars. */}
+            <Image
+              src={SHOWCASE_VIDEO.poster}
+              alt=""
+              fill
+              sizes="100vw"
+              className="scale-125 object-cover opacity-70 blur-2xl"
+            />
             <video
               ref={videoRef}
               src={SHOWCASE_VIDEO.src}
@@ -79,7 +100,7 @@ export function VideoShowcase() {
               playsInline
               preload="metadata"
               aria-label={SHOWCASE_VIDEO.title}
-              className="size-full object-contain"
+              className="relative mx-auto block aspect-[826/1080] h-full w-auto max-w-full object-cover shadow-[0_0_80px_rgba(0,0,0,0.5)]"
             />
             <p className="pointer-events-none absolute top-4 left-5 m-0 max-w-[70%] text-sm font-medium text-white/90 [text-shadow:0_1px_6px_rgba(0,0,0,0.7)]">
               {SHOWCASE_VIDEO.title}
