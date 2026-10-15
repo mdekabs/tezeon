@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { PortfolioGrid } from "@/components/sections/portfolio-grid";
+import { ProjectsShowcase } from "@/components/sections/projects-showcase";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageLoader } from "@/components/shared/page-loader";
 
@@ -37,7 +37,7 @@ export default function ProjectsPage() {
           { label: "Our Projects", href: "/projects" },
         ]}
       />
-      <PortfolioGrid />
+      <ProjectsShowcase />
     </>
   );
 }

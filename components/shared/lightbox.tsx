@@ -121,6 +121,13 @@ function LightboxNav({ direction, onClick }: { direction: "prev" | "next"; onCli
   );
 }
 
+/** Opens the surrounding `<LightboxGroup>` at an image index. */
+export function useLightbox(): LightboxContextValue {
+  const context = useContext(LightboxContext);
+  if (!context) throw new Error("useLightbox must be used inside <LightboxGroup>.");
+  return context;
+}
+
 interface LightboxTriggerProps {
   index: number;
   label: string;
@@ -129,8 +136,7 @@ interface LightboxTriggerProps {
 
 /** Legacy `<a class="btn" data-lightbox>+</a>` — the 60×60 "+" tile. */
 export function LightboxTrigger({ index, label, className }: LightboxTriggerProps) {
-  const context = useContext(LightboxContext);
-  if (!context) throw new Error("LightboxTrigger must be rendered inside <LightboxGroup>.");
+  const context = useLightbox();
 
   return (
     <button

@@ -16,13 +16,10 @@ export interface PortfolioCardProps {
   /** Position of `image` in the surrounding `<LightboxGroup>`. */
   lightboxIndex?: number;
   onPlayVideo?: () => void;
-  blurDataURL?: string;
-  /** `gallery` adds the gallery-page hover lift, rounded corners and shimmer. */
-  variant?: "projects" | "gallery";
 }
 
 /**
- * Legacy `.portfolio-warp` card (style.css:2162-2251, 2850-2918): 250px media
+ * Gallery card — legacy `.portfolio-warp` (style.css:2162-2251, 2850-2918): 250px media
  * slot with a navy hover overlay, navy title strip and a white "+" tile.
  * Video items show a pulsing gold play disc; projects without media show a
  * "Coming Soon" frame instead of a photo.
@@ -36,21 +33,14 @@ export function PortfolioCard({
   poster,
   lightboxIndex,
   onPlayVideo,
-  blurDataURL,
-  variant = "projects",
 }: PortfolioCardProps) {
-  const gallery = variant === "gallery";
   const hasVideo = Boolean(video && onPlayVideo);
 
   return (
     <div
-      className={cn(
-        "group relative mb-[30px] w-full text-center",
-        gallery &&
-          "overflow-hidden rounded-md transition-[transform,box-shadow] duration-[340ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform hover:-translate-y-2.5 hover:shadow-[0_22px_44px_rgba(0,0,0,0.22)]",
-      )}
+      className="group relative mb-[30px] w-full overflow-hidden rounded-md text-center transition-[transform,box-shadow] duration-[340ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform hover:-translate-y-2.5 hover:shadow-[0_22px_44px_rgba(0,0,0,0.22)]"
     >
-      <div className={cn("relative h-[250px] overflow-hidden", gallery && image && "animate-shimmer shimmer-bg")}>
+      <div className={cn("relative h-[250px] overflow-hidden", image && "animate-shimmer shimmer-bg")}>
         {hasVideo ? (
           <button
             type="button"
@@ -75,8 +65,6 @@ export function PortfolioCard({
               width={360}
               height={250}
               sizes="(min-width: 1200px) 255px, (min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-              placeholder={blurDataURL ? "blur" : "empty"}
-              blurDataURL={blurDataURL}
               className="relative z-[1] block h-[250px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
             />
             <div className="absolute inset-0 z-[2] flex items-center justify-center bg-dark/70 p-[30px] opacity-0 transition-opacity duration-500 group-hover:opacity-100">

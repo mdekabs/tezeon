@@ -86,6 +86,8 @@ export type PortfolioFilter = "all" | ProjectStatus;
 export interface PortfolioItem {
   title: string;
   description: string;
+  /** Where the project is (shown on the featured ongoing project). */
+  location?: string;
   status: ProjectStatus;
   /** Photo (opens in the lightbox). Upcoming projects have none and render "Coming Soon". */
   image?: string;

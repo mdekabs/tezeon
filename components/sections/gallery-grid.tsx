@@ -63,7 +63,6 @@ export function GalleryGrid() {
                   transition={{ duration: 0.4, delay: Math.min(index, 7) * 0.07 }}
                 >
                   <PortfolioCard
-                    variant="gallery"
                     title={item.title}
                     description={item.description}
                     image={item.image}

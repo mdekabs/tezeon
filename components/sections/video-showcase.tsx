@@ -1,12 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useCloseWhenHidden } from "@/hooks/use-close-when-hidden";
 import { SHOWCASE_VIDEO } from "@/lib/data";
-
-/** Fraction of the section that must stay visible before the player closes. */
-const CLOSE_BELOW_VISIBLE_RATIO = 0.25;
 
 /**
  * Ongoing-project teaser — legacy `.video` (style.css:159-174, 1099-1191,
@@ -26,29 +24,8 @@ export function VideoShowcase() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
   const backgroundPositionY = useTransform(scrollYProgress, [0, 1], ["50%", "70%"]);
 
-  /* Auto-close when the section leaves the viewport; Escape closes too. */
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!playing || !section) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.intersectionRatio < CLOSE_BELOW_VISIBLE_RATIO) setPlaying(false);
-      },
-      { threshold: [0, CLOSE_BELOW_VISIBLE_RATIO] },
-    );
-    observer.observe(section);
-
-    const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.key === "Escape") setPlaying(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [playing]);
+  const stop = useCallback(() => setPlaying(false), []);
+  useCloseWhenHidden(sectionRef, playing, stop);
 
   /* Start playback as soon as the player mounts. */
   useEffect(() => {

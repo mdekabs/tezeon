@@ -382,8 +382,9 @@ export const PORTFOLIO_ITEMS: readonly PortfolioItem[] = [
     status: "completed",
   },
   {
-    title: SHOWCASE_VIDEO.title,
-    description: "Water reticulation network for Orange Island, Lagos",
+    title: "Water Reticulation",
+    location: "Orange Island, Lagos",
+    description: "Water reticulation network for the Orange Island estate in Lagos. Work is in progress.",
     status: "ongoing",
     video: SHOWCASE_VIDEO.src,
     poster: SHOWCASE_VIDEO.poster,
