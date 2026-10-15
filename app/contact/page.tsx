@@ -3,27 +3,14 @@ import type { Metadata } from "next";
 import { ContactSection } from "@/components/sections/contact-section";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageLoader } from "@/components/shared/page-loader";
-import { COMPANY } from "@/lib/data";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact Us | Lagos Water Engineering",
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
+  title: "Contact Us for a Free Water Quote",
   description:
-    "Contact Tezeon Services Limited for water engineering consultations and quotes. 30 Bayo Shodikpo Ave, Ajah, Lagos. Call +234 803 096 7886 or email us today.",
-  keywords: [
-    "contact Tezeon",
-    "water engineering Lagos contact",
-    "borehole quote Nigeria",
-    "water services consultation",
-  ],
-  alternates: { canonical: "/contact" },
-  openGraph: {
-    url: "/contact",
-    images: [{ url: COMPANY.logo, alt: COMPANY.name }],
-    title: `Contact ${COMPANY.name} | Lagos Water Engineering`,
-    description:
-      "Get a free quote for water engineering services. Office in Ajah, Lagos. Call +234 803 096 7886 or email info@tezeonservicesltd.com",
-  },
-};
+    "Get a free water engineering quote. Visit us at 30 Bayo Shodikpo Avenue, Ajah, Lagos, call +234 803 096 7886 or email info@tezeonservicesltd.com.",
+});
 
 export default function ContactPage() {
   return (

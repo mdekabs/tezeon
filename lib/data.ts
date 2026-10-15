@@ -37,9 +37,8 @@ export const COMPANY = {
   openingHours: "Mon - Fri, 8:00 - 9:00",
   whatsappUrl: "https://wa.link/nv8lmw",
   description:
-    "Tezeon Services Limited delivers expert borehole drilling, water filtration, reservoir construction and plumbing across Nigeria. Trusted by Chevron, Landwey & more.",
-  defaultTitle:
-    "Tezeon Services Limited | Borehole Drilling & Water Engineering — Lagos, Nigeria",
+    "Borehole drilling, water treatment, reservoir construction and plumbing across Nigeria from our Lagos team. Trusted by Chevron and Landwey. Get a free quote.",
+  defaultTitle: "Borehole Drilling & Water Engineering in Lagos | Tezeon",
 } as const;
 
 /** Legacy local asset that was served from `assets/` — now lives in `public/`. */
@@ -79,6 +78,8 @@ export const TOP_BAR_ITEMS: readonly TopBarItem[] = [
 export const HERO_SLIDES: readonly HeroSlide[] = [
   {
     videoSrc: `${VID}/v1780763751/video_tezeons_jcytjj.mp4`,
+    /* Poster frame so the first hero panel paints before the video loads (LCP). */
+    poster: `${VID}/q_auto,w_1280/v1780763751/video_tezeons_jcytjj.jpg`,
     sub: "Clean water is our business",
     headingTop: "For your Offices",
     headingBottom: "and Sites",

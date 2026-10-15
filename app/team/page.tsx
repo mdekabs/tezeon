@@ -3,28 +3,15 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageLoader } from "@/components/shared/page-loader";
 
-import { COMPANY } from "@/lib/data";
 import { Team } from "@/components/sections/team";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Our Team | Water Engineering Specialists",
+export const metadata: Metadata = pageMetadata({
+  path: "/team",
+  title: "Our Water Engineers & Geologists",
   description:
-    "Meet the expert water engineers and hydrogeologists at Tezeon Services Limited, delivering quality water solutions for homes, estates and industries across Nigeria.",
-  keywords: [
-    "Tezeon team",
-    "water engineers Nigeria",
-    "hydrogeologist Lagos",
-    "water specialists Nigeria",
-  ],
-  alternates: { canonical: "/team" },
-  openGraph: {
-    url: "/team",
-    images: [{ url: COMPANY.logo, alt: COMPANY.name }],
-    title: "Our Team | Tezeon Services Limited",
-    description:
-      "Expert water engineers and geologists delivering quality hydrogeological solutions across Nigeria.",
-  },
-};
+    "Meet Tezeon's water engineers, geologists and technicians: the Lagos team behind our borehole, water treatment and plumbing projects across Nigeria.",
+});
 
 export default function TeamPage() {
   return (

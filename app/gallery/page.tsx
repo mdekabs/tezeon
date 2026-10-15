@@ -4,28 +4,14 @@ import { GalleryGrid } from "@/components/sections/gallery-grid";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageLoader } from "@/components/shared/page-loader";
 
-import { COMPANY } from "@/lib/data";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Photo Gallery | Water Engineering Work",
+export const metadata: Metadata = pageMetadata({
+  path: "/gallery",
+  title: "Borehole & Water Project Photo Gallery",
   description:
-    "Browse Tezeon Services Limited's photo gallery — borehole drilling, water filtration, reservoir construction, plumbing and home water systems across Nigeria.",
-  keywords: [
-    "Tezeon gallery",
-    "water engineering photos Nigeria",
-    "borehole drilling photos",
-    "water filtration gallery",
-    "reservoir construction Nigeria",
-  ],
-  alternates: { canonical: "/gallery" },
-  openGraph: {
-    url: "/gallery",
-    images: [{ url: COMPANY.logo, alt: COMPANY.name }],
-    title: "Photo Gallery | Tezeon Services Limited",
-    description:
-      "Browse our water engineering gallery — borehole drilling, filtration, reservoir construction and plumbing work across Nigeria.",
-  },
-};
+    "Photos and videos of Tezeon's work: borehole drilling, water filtration, reservoir construction and plumbing projects across Lagos and Nigeria.",
+});
 
 export default function GalleryPage() {
   return (

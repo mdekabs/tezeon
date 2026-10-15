@@ -3,31 +3,16 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageLoader } from "@/components/shared/page-loader";
 
-import { COMPANY } from "@/lib/data";
 import { Faqs } from "@/components/sections/faqs";
 import { Services } from "@/components/sections/services";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Our Services | Water Filtration, Drilling & Plumbing",
+export const metadata: Metadata = pageMetadata({
+  path: "/services",
+  title: "Borehole, Filtration & Plumbing Services",
   description:
-    "Tezeon Services offers water filtration, borehole drilling, reservoir construction, plumbing, home water systems and treatment plant management across Nigeria.",
-  keywords: [
-    "water filtration Nigeria",
-    "borehole drilling Lagos",
-    "reservoir construction",
-    "plumbing Lagos",
-    "water treatment plant",
-    "home water system",
-  ],
-  alternates: { canonical: "/services" },
-  openGraph: {
-    url: "/services",
-    images: [{ url: COMPANY.logo, alt: COMPANY.name }],
-    title: "Water Engineering Services | Tezeon Services Limited",
-    description:
-      "Filtration, borehole drilling, reservoir construction, plumbing and home water systems. Professional water solutions across Nigeria.",
-  },
-};
+    "Borehole drilling, water filtration, reservoir construction, home water systems and plumbing for homes, estates and industry across Nigeria. Get a free quote.",
+});
 
 export default function ServicesPage() {
   return (

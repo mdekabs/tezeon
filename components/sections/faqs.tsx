@@ -5,9 +5,9 @@ import { FAQS } from "@/lib/data";
 import type { Faq } from "@/types";
 
 /**
- * Static FAQPage structured data so Google can render rich answer snippets
- * wherever this section appears (home, services, about). The payload is a
- * code-owned constant — no untrusted input passes through.
+ * FAQPage structured data. Emitted on one page only (home) — the same
+ * questions also appear on About and Services, and duplicate FAQ markup
+ * across URLs dilutes it. Code-owned constant; no untrusted input.
  */
 const FAQ_SCHEMA = {
   "@context": "https://schema.org",
@@ -25,15 +25,17 @@ const COLUMNS = [FAQS.slice(0, 5), FAQS.slice(5)] as const;
  * Legacy `.faqs` (style.css:1356-1457, 3526-3539): two independent
  * single-open accordions split by a 1px gold rule (hidden below 768px).
  */
-export function Faqs() {
+export function Faqs({ withSchema = false }: { withSchema?: boolean }) {
   return (
     <section id="faqs" className="bg-faq-gradient relative w-full py-[45px]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(FAQ_SCHEMA).replace(/</g, "\\u003c"),
-        }}
-      />
+      {withSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(FAQ_SCHEMA).replace(/</g, "\\u003c"),
+          }}
+        />
+      ) : null}
       <div className="container-bs">
         <SectionHeader eyebrow="Frequently Asked Question" title="You May Ask" />
 

@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { Chatbot } from "@/components/shared/chatbot";
 import { MotionProvider } from "@/components/shared/motion-provider";
 import { COMPANY } from "@/lib/data";
+import { SHARE_IMAGE, SITE_STRUCTURED_DATA, TITLE_SUFFIX } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -21,79 +22,36 @@ export const metadata: Metadata = {
   metadataBase: new URL(COMPANY.siteUrl),
   title: {
     default: COMPANY.defaultTitle,
-    template: `%s | ${COMPANY.name}`,
+    template: `%s | ${TITLE_SUFFIX}`,
   },
   description: COMPANY.description,
-  keywords: [
-    "water engineering Lagos",
-    "borehole drilling Nigeria",
-    "water filtration",
-    "reservoir construction",
-    "plumbing Lagos",
-    "hydrogeological services",
-  ],
   openGraph: {
     type: "website",
+    locale: "en_NG",
     siteName: COMPANY.name,
-    title: `${COMPANY.name} | Water Engineering Lagos`,
-    description:
-      "Expert borehole drilling, water filtration, reservoir construction and plumbing across Nigeria. Get a free consultation today.",
+    title: COMPANY.defaultTitle,
+    description: COMPANY.description,
     url: "/",
-    images: [{ url: COMPANY.logo, alt: COMPANY.name }],
+    images: [SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${COMPANY.name} | Water Engineering Lagos`,
-    description:
-      "Expert borehole drilling, water filtration, reservoir construction and plumbing across Nigeria. Get a free consultation today.",
-    images: [COMPANY.logo],
+    title: COMPANY.defaultTitle,
+    description: COMPANY.description,
+    images: [SHARE_IMAGE.url],
   },
-};
-
-/**
- * Organization + WebSite graph published site-wide. The payload is a static,
- * code-owned constant (no user input), so `dangerouslySetInnerHTML` carries no
- * XSS surface; `<` is still escaped defensively.
- */
-const STRUCTURED_DATA = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": `${COMPANY.siteUrl}/#organization`,
-      name: COMPANY.name,
-      url: COMPANY.siteUrl,
-      logo: COMPANY.logo,
-      email: COMPANY.email,
-      telephone: COMPANY.tel,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: COMPANY.street,
-        addressLocality: COMPANY.city,
-        addressRegion: COMPANY.region,
-        addressCountry: COMPANY.country,
-      },
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${COMPANY.siteUrl}/#website`,
-      url: COMPANY.siteUrl,
-      name: COMPANY.name,
-      publisher: { "@id": `${COMPANY.siteUrl}/#organization` },
-    },
-  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${poppins.variable} h-full`}>
+    <html lang="en-NG" data-scroll-behavior="smooth" className={`${poppins.variable} h-full`}>
       <body className="font-sans">
         <MotionProvider>
           <script
             type="application/ld+json"
             // Static, code-owned JSON — no untrusted input passes through here.
             dangerouslySetInnerHTML={{
-              __html: JSON.stringify(STRUCTURED_DATA).replace(/</g, "\\u003c"),
+              __html: JSON.stringify(SITE_STRUCTURED_DATA).replace(/</g, "\\u003c"),
             }}
           />
           {/* Legacy `.wrapper`: centred 1366px white page over the body gradient.

@@ -1,7 +1,7 @@
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { useEffect, useRef } from "react";
+import { useCallback } from "react";
 
 interface VideoModalProps {
   src: string | null;
@@ -11,32 +11,29 @@ interface VideoModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+/** Start playback, falling back to muted if the browser blocks sound. */
+function playWithFallback(video: HTMLVideoElement): void {
+  video.play().catch(() => {
+    video.muted = true;
+    video.play().catch(() => undefined);
+  });
+}
+
 /**
- * Legacy `#galleryVideoModal` (style.css:2920-2962): 860px transparent dialog
- * with a large × above it and a rounded, muted player that waits for a click.
- * As in the legacy script, the source is attached on open and released
- * (pause + clear + load) on close so nothing keeps buffering.
+ * Video player dialog — legacy `#galleryVideoModal` look (style.css:2920-2962):
+ * 860px transparent dialog with a large × above a rounded player.
+ *
+ * The dialog's content mounts a frame after `open` flips (portal), so playback
+ * is started from a callback ref — i.e. exactly when the <video> exists.
+ * Closing unmounts the element, which stops the download.
  */
 export function VideoModal({ src, poster, title, open, onOpenChange }: VideoModalProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (open && src && video) video.src = src;
-  }, [open, src]);
-
-  const handleOpenChange = (nextOpen: boolean): void => {
-    const video = videoRef.current;
-    if (!nextOpen && video) {
-      video.pause();
-      video.removeAttribute("src");
-      video.load();
-    }
-    onOpenChange(nextOpen);
-  };
+  const attachVideo = useCallback((video: HTMLVideoElement | null) => {
+    if (video) playWithFallback(video);
+  }, []);
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-[9990] bg-black/50 data-[state=open]:animate-fade-in" />
         <DialogPrimitive.Content
@@ -50,15 +47,18 @@ export function VideoModal({ src, poster, title, open, onOpenChange }: VideoModa
           >
             &times;
           </DialogPrimitive.Close>
-          <video
-            ref={videoRef}
-            controls
-            playsInline
-            muted
-            preload="none"
-            poster={poster}
-            className="block h-auto max-h-[76vh] w-full rounded-md bg-black object-contain"
-          />
+          {src ? (
+            <video
+              key={src}
+              ref={attachVideo}
+              src={src}
+              poster={poster}
+              controls
+              playsInline
+              preload="auto"
+              className="block h-auto max-h-[76vh] w-full rounded-md bg-black object-contain"
+            />
+          ) : null}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

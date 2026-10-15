@@ -4,27 +4,14 @@ import { ProjectsShowcase } from "@/components/sections/projects-showcase";
 import { PageHeader } from "@/components/shared/page-header";
 import { PageLoader } from "@/components/shared/page-loader";
 
-import { COMPANY } from "@/lib/data";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Our Projects | Water Engineering Portfolio",
+export const metadata: Metadata = pageMetadata({
+  path: "/projects",
+  title: "Water Engineering Projects in Lagos",
   description:
-    "Browse completed and ongoing water engineering projects by Tezeon Services Limited — borehole drilling, industrial filtration, reservoir construction and more.",
-  keywords: [
-    "water engineering projects Nigeria",
-    "borehole projects Lagos",
-    "water filtration portfolio",
-    "reservoir projects Nigeria",
-  ],
-  alternates: { canonical: "/projects" },
-  openGraph: {
-    url: "/projects",
-    images: [{ url: COMPANY.logo, alt: COMPANY.name }],
-    title: "Our Projects | Tezeon Services Limited",
-    description:
-      "Browse our water engineering portfolio — borehole drilling, industrial filtration, reservoir construction and home water systems across Nigeria.",
-  },
-};
+    "Completed, ongoing and upcoming Tezeon projects, including water reticulation at Orange Island, Lagos, reservoir builds and filtration tank installs.",
+});
 
 export default function ProjectsPage() {
   return (

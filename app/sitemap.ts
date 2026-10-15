@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${base}/`,
-      lastModified: new Date("2026-06-04"),
+      lastModified: new Date("2026-10-15"),
       changeFrequency: "monthly",
       priority: 1,
     },
@@ -30,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${base}/projects`,
-      lastModified: new Date("2026-06-04"),
+      lastModified: new Date("2026-10-15"),
       changeFrequency: "monthly",
       priority: 0.7,
     },
