@@ -1,8 +1,8 @@
-import { Globe, Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { FaAngleRight, FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 import { NewsletterForm } from "@/components/layout/newsletter-form";
-import { OpeningStatus } from "@/components/shared/opening-status";
 import { SocialIcon } from "@/components/shared/social-icons";
 import {
   COMPANY,
@@ -11,149 +11,96 @@ import {
   FOOTER_SERVICE_AREAS,
   FOOTER_SOCIALS,
 } from "@/lib/data";
+import type { NavLinkItem } from "@/types";
 
 const CONTACT_ROWS = [
-  { icon: MapPin, text: COMPANY.addressLine },
-  { icon: Phone, text: COMPANY.phone },
-  { icon: Mail, text: COMPANY.email },
+  { icon: FaMapMarkerAlt, text: COMPANY.addressLine },
+  { icon: FaPhoneAlt, text: COMPANY.phone },
+  { icon: FaEnvelope, text: COMPANY.email },
 ] as const;
 
 /**
- * Apple-style structural footer anchor:
- *  - ambient gold radial glow behind the branding area,
- *  - hairline gradient divider instead of a hard border,
- *  - 4 → 2 → 1 responsive column matrix with muted link hierarchy,
- *  - liquid-glass newsletter card,
- *  - legal bar carrying locale chip, live office-status indicator, copyright
- *    and the HTML Codex attribution required by the CC BY 4.0 license.
+ * Legacy `.footer` (style.css:2388-2566, 2698-2723): four columns (contact,
+ * service areas, useful pages, newsletter), a bordered link strip and the
+ * copyright row carrying the HTML Codex credit required by the template licence.
  */
 export function SiteFooter() {
   return (
-    <footer className="relative overflow-hidden bg-dark text-white/60">
-      {/* Ambient brand glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 h-72 w-[48rem] max-w-none -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(253,190,51,0.14),transparent_70%)] blur-3xl"
-      />
-
-      <div className="hairline-divider" />
-
-      <div className="container-x relative grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-4 lg:py-20">
-        <div>
-          <h2 className="mb-5 text-base font-semibold tracking-tight text-white">
-            Office Contact
-          </h2>
-          <ul className="space-y-3 text-sm">
+    <footer className="relative mt-[45px] bg-footer-gradient pt-[90px] text-white">
+      <div className="container-bs">
+        <div className="-mx-[15px] flex flex-wrap">
+          <FooterColumn title="Office Contact">
             {CONTACT_ROWS.map((row) => (
-              <li key={row.text} className="flex items-start gap-2.5">
-                <row.icon className="mt-0.5 size-4 shrink-0 text-brand-gold" aria-hidden="true" />
-                <span className="text-white/60">{row.text}</span>
-              </li>
+              <p key={row.text} className="mb-4">
+                <row.icon aria-hidden="true" className="inline w-[25px] align-[-0.125em]" />
+                {row.text}
+              </p>
             ))}
-          </ul>
-          <div className="mt-5 flex items-center gap-2">
-            {FOOTER_SOCIALS.map((social) => (
-              <a
-                key={social.platform}
-                href={social.href}
-                aria-label={social.platform}
-                className="grid size-9 place-items-center rounded-full border border-white/10 text-white/60 transition-colors duration-300 hover:border-brand-gold hover:bg-brand-gold hover:text-dark"
-              >
-                <SocialIcon platform={social.platform} />
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h2 className="mb-5 text-base font-semibold tracking-tight text-white">
-            Services Areas
-          </h2>
-          <ul className="space-y-2.5 text-sm">
-            {FOOTER_SERVICE_AREAS.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="text-white/60 transition-colors duration-300 hover:text-white"
+            <div className="mt-5">
+              {FOOTER_SOCIALS.map((social) => (
+                <a
+                  key={social.platform}
+                  href={social.href}
+                  aria-label={social.platform}
+                  className="group mr-1 inline-flex size-10 items-center justify-center rounded-[60px] border border-white/30 transition-all duration-300 hover:border-primary hover:bg-primary"
                 >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+                  <SocialIcon platform={social.platform} className="text-[15px] text-white group-hover:text-dark" />
+                </a>
+              ))}
+            </div>
+          </FooterColumn>
 
-        <div>
-          <h2 className="mb-5 text-base font-semibold tracking-tight text-white">
-            Useful Pages
-          </h2>
-          <ul className="space-y-2.5 text-sm">
-            {FOOTER_PAGES.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="text-white/60 transition-colors duration-300 hover:text-white"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <FooterColumn title="Services Areas">
+            <FooterLinks links={FOOTER_SERVICE_AREAS} />
+          </FooterColumn>
 
-        <div>
-          <h2 className="mb-5 text-base font-semibold tracking-tight text-white">
-            Newsletter
-          </h2>
-          <div className="glass-panel-dark rounded-2xl p-5">
-            <p className="text-sm text-white/60">Subscribe to our newsletter</p>
+          <FooterColumn title="Useful Pages">
+            <FooterLinks links={FOOTER_PAGES} />
+          </FooterColumn>
+
+          <FooterColumn title="Newsletter">
+            <p className="mb-4">Subscribe to our newsletter</p>
             <NewsletterForm />
-          </div>
+          </FooterColumn>
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="container-x flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-5 text-sm">
+      <div className="container-bs">
+        <nav
+          aria-label="Legal"
+          className="relative border-y border-white/10 py-[15px] text-center max-sm:flex max-sm:flex-wrap max-sm:justify-center max-sm:gap-x-1 max-sm:gap-y-2"
+        >
           {FOOTER_MENU.map((item) => (
             <Link
               key={item.label}
               href={item.href}
-              className="text-white/50 transition-colors duration-300 hover:text-white"
+              className="mr-[15px] border-r border-white/10 pr-[15px] text-base text-white last:mr-0 last:border-r-0 last:pr-0 hover:text-primary max-sm:m-0 max-sm:border-r-0 max-sm:px-2 max-sm:py-1 max-sm:text-[13px]"
             >
               {item.label}
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="container-x flex flex-col items-center justify-between gap-4 py-5 text-sm md:flex-row">
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:justify-start">
-            <p>
-              ©{" "}
-              <Link href="/" className="text-white/60 transition-colors hover:text-white">
+      <div className="container-bs px-[15px] py-[30px]">
+        <div className="-mx-[15px] flex flex-wrap">
+          <div className="w-full px-[15px] md:w-1/2">
+            <p className="m-0 text-white max-md:my-[5px] max-md:text-center">
+              &copy;{" "}
+              <Link href="/" className="font-medium tracking-[1px] text-primary hover:text-white">
                 tezeonservicesltd.com
               </Link>
               , All Right Reserved.
             </p>
-            <span
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/50"
-              title="This site is published in English."
-            >
-              <Globe className="size-3" aria-hidden="true" />
-              English · NG
-            </span>
           </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            <OpeningStatus />
-            <p>
+          <div className="w-full px-[15px] md:w-1/2">
+            <p className="m-0 text-right text-white max-md:my-[5px] max-md:text-center">
               Designed By{" "}
               <a
                 href="https://htmlcodex.com"
-                rel="noopener noreferrer"
                 target="_blank"
-                className="text-white/60 transition-colors hover:text-white"
+                rel="noopener noreferrer"
+                className="font-medium tracking-[1px] text-primary hover:text-white"
               >
                 HTML Codex
               </a>
@@ -162,5 +109,36 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterColumn({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="w-full px-[15px] md:w-1/2 lg:w-1/4">
+      <div className="relative mb-[45px] max-md:mb-[30px]">
+        <h2 className="relative mb-5 pb-2.5 text-xl font-semibold text-primary after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-[60px] after:bg-primary after:content-['']">
+          {title}
+        </h2>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function FooterLinks({ links }: { links: readonly NavLinkItem[] }) {
+  return (
+    <ul>
+      {links.map((link) => (
+        <li key={link.label}>
+          <Link
+            href={link.href}
+            className="mb-2.5 block text-white transition-all duration-300 hover:tracking-[1px] hover:text-primary"
+          >
+            <FaAngleRight aria-hidden="true" className="mr-2.5 inline align-[-0.125em]" />
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

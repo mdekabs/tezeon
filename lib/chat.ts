@@ -1,34 +1,13 @@
 import { COMPANY, SERVICES, TEAM_MEMBERS } from "@/lib/data";
-import type { ChatAdapter, ChatQuickReply } from "@/types";
+import type { ChatAdapter } from "@/types";
 
-/** Contextual inquiry pills offered beneath the conversation log. */
-export const CHAT_QUICK_REPLIES: readonly ChatQuickReply[] = [
-  { id: "services", label: "Services" },
-  { id: "projects", label: "Project Inquiries" },
-  { id: "quote", label: "Get a Quote" },
-  { id: "team", label: "Our Team" },
-  { id: "contact", label: "Contact" },
-];
-
-/** Maps a quick-reply pill to the message text it dispatches. */
-const QUICK_REPLY_MESSAGES: Record<string, string> = {
-  services: "What services do you offer?",
-  projects: "Tell me about your projects.",
-  quote: "I'd like a free quote.",
-  team: "Who is on your team?",
-  contact: "How can I contact you?",
-};
-
-export function quickReplyToMessage(id: string): string {
-  return QUICK_REPLY_MESSAGES[id] ?? id;
-}
-
+/** Opening message from the legacy chatbot.js. */
 const GREETING =
-  "Hello! I'm the Tezeon assistant. Ask me about our water engineering services, current projects, or how to get a free quote.";
+  "Hi! I'm Teza 💧— Tezeon's water assistant. Ask me about boreholes, water treatment, plumbing systems, or how we can serve your project.";
 
 const FALLBACK =
   "Thanks for reaching out. For anything I can't answer here, our team is available on " +
-  `${COMPANY.phone} or ${COMPANY.email} — or tap "Get a Quote" for a free WhatsApp consultation.`;
+  `${COMPANY.phone} or ${COMPANY.email} — or ask for a free quote on WhatsApp (${COMPANY.whatsappUrl}).`;
 
 const SERVICE_LIST = SERVICES.map((service) => service.title.toLowerCase()).join(", ");
 

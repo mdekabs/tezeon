@@ -34,7 +34,7 @@ export default function ProjectsPage() {
         title="Our Projects"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Our Projects" },
+          { label: "Our Projects", href: "/projects" },
         ]}
       />
       <PortfolioGrid />

@@ -37,7 +37,7 @@ export default function AboutPage() {
         title="About Us"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "About Us" },
+          { label: "About Us", href: "/about" },
         ]}
       />
       <AboutSection videoSrc={ABOUT_PAGE_VIDEO_SRC} />

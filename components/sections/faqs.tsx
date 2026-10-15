@@ -1,11 +1,8 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Reveal } from "@/components/shared/reveal";
 import { SectionHeader } from "@/components/shared/section-header";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { FAQS } from "@/lib/data";
+import type { Faq } from "@/types";
 
 /**
  * Static FAQPage structured data so Google can render rich answer snippets
@@ -22,52 +19,57 @@ const FAQ_SCHEMA = {
   })),
 };
 
+const COLUMNS = [FAQS.slice(0, 5), FAQS.slice(5)] as const;
+
 /**
- * Two-column FAQ accordion (`.faqs`) — legacy spec (style.css:1356-1457):
- * - Section: linear-gradient(180deg, #edf4ff, #f8fbff 50%, #fff)
- * - 1px GOLD vertical divider between the two columns (hidden < 768px)
- * - Square cards; open header flips to solid gold with navy "×"
- * - Radix `type="single" collapsible` = one open item per column,
- *   exactly like the legacy `data-parent` behaviour.
+ * Legacy `.faqs` (style.css:1356-1457, 3526-3539): two independent
+ * single-open accordions split by a 1px gold rule (hidden below 768px).
  */
 export function Faqs() {
   return (
-    <section id="faqs" className="bg-faq-gradient relative py-11">
+    <section id="faqs" className="bg-faq-gradient relative w-full py-[45px]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(FAQ_SCHEMA).replace(/</g, "\\u003c"),
         }}
       />
-      <div className="container-x relative">
+      <div className="container-bs">
         <SectionHeader eyebrow="Frequently Asked Question" title="You May Ask" />
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
-          {/* Legacy gold centre divider: `.faqs .row::after` */}
-          <span
-            aria-hidden="true"
-            className="hairline-divider-gold absolute left-1/2 top-0 hidden h-full md:block"
-          />
-
-          <Accordion type="single" collapsible className="space-y-4 md:pr-[15px]">
-            {FAQS.slice(0, 5).map((faq) => (
-              <AccordionItem key={faq.question} value={faq.question}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-
-          <Accordion type="single" collapsible className="space-y-4 md:pl-[15px]">
-            {FAQS.slice(5).map((faq) => (
-              <AccordionItem key={faq.question} value={faq.question}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <div className="relative -mx-[15px] flex flex-wrap md:after:absolute md:after:top-0 md:after:left-[calc(50%-0.5px)] md:after:h-full md:after:w-px md:after:bg-primary md:after:content-['']">
+          {COLUMNS.map((faqs, column) => (
+            <div key={column} className="w-full px-[15px] md:w-1/2">
+              <FaqColumn faqs={faqs} fromLeft={column === 0} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function FaqColumn({ faqs, fromLeft }: { faqs: readonly Faq[]; fromLeft: boolean }) {
+  return (
+    <Accordion
+      type="single"
+      collapsible
+      className={fromLeft ? "md:pr-[15px]" : "max-md:pt-[15px] md:pl-[15px]"}
+    >
+      {faqs.map((faq, index) => (
+        <Reveal
+          key={faq.question}
+          x={fromLeft ? -30 : 30}
+          duration={0.5}
+          delay={index * 0.07}
+          className="mb-[15px] last:mb-0"
+        >
+          <AccordionItem value={faq.question}>
+            <AccordionTrigger>{faq.question}</AccordionTrigger>
+            <AccordionContent>{faq.answer}</AccordionContent>
+          </AccordionItem>
+        </Reveal>
+      ))}
+    </Accordion>
   );
 }

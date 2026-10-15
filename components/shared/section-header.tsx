@@ -10,8 +10,8 @@ interface SectionHeaderProps {
 }
 
 /**
- * Gold eyebrow + bold heading pair used above every legacy section
- * (`.section-header` in the source markup).
+ * Legacy `.section-header` (style.css:754-778, 2739-2746, 3154-3162):
+ * gold glass "pill" eyebrow above a 50px bold heading, 45px bottom margin.
  */
 export function SectionHeader({
   eyebrow,
@@ -22,13 +22,19 @@ export function SectionHeader({
   return (
     <div
       className={cn(
-        "max-w-3xl",
-        align === "center" ? "mx-auto text-center" : "text-left",
+        "relative mb-[45px] w-full",
+        align === "center" ? "text-center" : "text-left",
         className,
       )}
     >
-      {eyebrow ? <p className="mb-2 text-base font-semibold text-primary">{eyebrow}</p> : null}
-      <h2 className="text-3xl font-bold leading-tight text-dark lg:text-4xl">{title}</h2>
+      {eyebrow ? (
+        <p className="glass-sub-label mb-[5px] inline-block px-4 py-[3px] text-lg font-semibold text-primary max-[480px]:text-[15px]">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h2 className="relative m-0 text-[50px] font-bold max-md:text-[30px] max-[480px]:text-2xl">
+        {title}
+      </h2>
     </div>
   );
 }

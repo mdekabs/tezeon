@@ -37,7 +37,7 @@ export default function ServicesPage() {
         title="Our Services"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Our Services" },
+          { label: "Our Services", href: "/services" },
         ]}
       />
       <Services />

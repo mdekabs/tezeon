@@ -34,7 +34,7 @@ export default function TeamPage() {
         title="Our Team"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Our Team" },
+          { label: "Our Team", href: "/team" },
         ]}
       />
       <Team />

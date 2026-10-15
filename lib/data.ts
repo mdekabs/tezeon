@@ -1,17 +1,4 @@
-import {
-  Building2,
-  CalendarDays,
-  Cog,
-  Construction,
-  Droplets,
-  Factory,
-  HardHat,
-  Home,
-  Mail,
-  MapPin,
-  Phone,
-  Wrench,
-} from "lucide-react";
+import { FaCog, FaFilter, FaHome, FaIndustry, FaWater, FaWrench } from "react-icons/fa";
 
 import type {
   CollageItem,
@@ -77,9 +64,9 @@ export const NAV_LINKS: readonly NavLinkItem[] = [
 ];
 
 export const TOP_BAR_ITEMS: readonly TopBarItem[] = [
-  { icon: CalendarDays, title: "Opening Hour", text: COMPANY.openingHours },
-  { icon: Phone, title: "Call Us", text: COMPANY.phone },
-  { icon: Mail, title: "Email Us", text: COMPANY.email },
+  { icon: "calendar", title: "Opening Hour", text: COMPANY.openingHours },
+  { icon: "call", title: "Call Us", text: COMPANY.phone },
+  { icon: "send-mail", title: "Email Us", text: COMPANY.email },
 ];
 
 /* --------------------------------------------------------------------------
@@ -134,29 +121,29 @@ export const ABOUT_INTRO = {
 
 export const FEATURES: readonly Feature[] = [
   {
-    icon: HardHat,
+    icon: "worker",
     title: "Expertise",
     description:
       "We have Water Engineers, Geologists, Technicians to meet our daily challenges.",
   },
   {
-    icon: Building2,
+    icon: "building",
     title: "Quality Work",
     description:
       "Our work speaks for itself. we don't just work, we build a legacy to be remembered.",
   },
   {
-    icon: Phone,
+    icon: "call",
     title: "24/7 Support",
     description: "Non-stop support and backup services for all our clients.",
   },
 ];
 
 export const FACTS: readonly Stat[] = [
-  { icon: HardHat, value: 20, label: "Expert Workers" },
-  { icon: Building2, value: 126, label: "Happy Clients" },
-  { icon: MapPin, value: 541, label: "Completed Projects" },
-  { icon: Construction, value: 11, label: "Running Projects" },
+  { icon: "worker", value: 20, label: "Expert Workers" },
+  { icon: "building", value: 126, label: "Happy Clients" },
+  { icon: "address", value: 541, label: "Completed Projects" },
+  { icon: "crane", value: 11, label: "Running Projects" },
 ];
 
 export const SERVICES: readonly Service[] = [
@@ -290,38 +277,38 @@ export const COLLAGE_ITEMS: readonly CollageItem[] = [
     image: `${IMG}/v1703179957/plumbing_eiwbiz.jpg`,
     alt: "Professional pipe installation",
     label: "Pipe Installation",
-    icon: Wrench,
+    icon: FaWrench,
     tall: true,
   },
   {
     image: `${IMG}/v1703180023/water_installation_qiomfk.jpg`,
     alt: "Industrial water filtration system",
     label: "Water Filtration",
-    icon: Droplets,
+    icon: FaFilter,
   },
   {
     image: `${IMG}/v1703179926/drilling_pvs4dm.jpg`,
     alt: "Borehole drilling operation",
     label: "Borehole Drilling",
-    icon: Cog,
+    icon: FaCog,
   },
   {
     image: `${IMG}/v1703179993/tank_rqjgdq.jpg`,
     alt: "Water reservoir construction",
     label: "Reservoir Build",
-    icon: Droplets,
+    icon: FaWater,
   },
   {
     image: `${IMG}/v1703179941/filtration_dz03pl.jpg`,
     alt: "Home water system setup",
     label: "Home Water System",
-    icon: Home,
+    icon: FaHome,
   },
   {
     image: LOCAL_FILTRATION_TANKS,
     alt: "Industrial filtration tank installation",
     label: "Treatment Tanks",
-    icon: Factory,
+    icon: FaIndustry,
   },
 ];
 
@@ -371,19 +358,20 @@ export const TESTIMONIALS: readonly Testimonial[] = [
 export const PORTFOLIO_BLUR: Record<string, string> = {
   "Home Water System":
     "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAMABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwT/xAAdEAACAQQDAAAAAAAAAAAAAAABAwACBBExISJB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/EABcRAQEBAQAAAAAAAAAAAAAAAAEAESH/2gAMAwEAAhEDEQA/AGXfAWlIB7SZ7DWM55MlRqMo7PsGA7t//9k=",
-  "Borehole Drilling":
-    "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAVABADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAQCAwUG/8QAHRAAAgICAwEAAAAAAAAAAAAAAQIAAwQhBRFBMf/EABUBAQEAAAAAAAAAAAAAAAAAAAED/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAER/9oADAMBAAIRAxEAPwDdzLCtYAP0xqpgKl35OVyeXL1LvYkqeePXT+R2DKTbFrddygYyVBvYQkorX//Z",
-  "Pipe Installation":
-    "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAVABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQAD/8QAHhAAAgIBBQEAAAAAAAAAAAAAAQIAA0EEBRETITH/xAAWAQEBAQAAAAAAAAAAAAAAAAAEAAL/xAAaEQADAAMBAAAAAAAAAAAAAAAAAQMCETEh/9oADAMBAAIRAxEAPwAqsgEBmmzVqD9mPX2WjgZiWpoSvTqxBB4lJ6DubWPQ2iwqy+Zje5OW2+s5lKZn0S/Zo//Z",
   "Reservoir Construction":
     "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAMABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAgX/xAAeEAACAgICAwAAAAAAAAAAAAABAwACESEFEhMxQv/EABUBAQEAAAAAAAAAAAAAAAAAAAID/8QAFxEBAQEBAAAAAAAAAAAAAAAAAQACEf/aAAwDAQACEQMRAD8AqXaSe2dx05SiiKtOZGe9mK79xOXXwC/1JG5Jy//Z",
-  "Industrial Filtration":
-    "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAMF/8QAHRAAAgMAAgMAAAAAAAAAAAAAAQIAAxEEBRIhQf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFREBAQAAAAAAAAAAAAAAAAAAABH/2gAMAwEAAhEDEQA/AEt21oUgv6kqu6tRvFTsw6y7HN0RNXHsL78iq//Z",
-  "Water Stanchion Setup":
-    "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAVABADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAQCAwUG/8QAHhAAAgICAgMAAAAAAAAAAAAAAQIAAwQREzEFEiL/xAAVAQEBAAAAAAAAAAAAAAAAAAABBP/EABgRAQADAQAAAAAAAAAAAAAAAAEAAiEx/9oADAMBAAIRAxEAPwCdVgxsd0Q+pPUa4jO2IrOROZvuSr5c7M043kOSniUnUBzYJsX2Vi1iW7l2BWK3bUISaq8lNqnZ/9k=",
   "Filtration Tank Install":
     "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAWABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQCBQb/xAAdEAACAgIDAQAAAAAAAAAAAAABAgADBBESITET/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAWEQEBAQAAAAAAAAAAAAAAAAAAASH/2gAMAwEAAhEDEQA/AHk+S3ctgGOravgMzFOYC2mJ5b6j2PcxyANwuGK/IoRGDKO5DGvsXI3vyEJKn//Z",
 };
+
+/**
+ * Media for the ongoing project, supplied by the client (Cloudinary).
+ * Paste the URL here — image or video (`/video/upload/` URLs play in the modal).
+ * Until it is set the ongoing card shows a "Coming Soon" frame.
+ */
+export const ONGOING_PROJECT_MEDIA: string | null = null;
+
+const isVideoUrl = (url: string): boolean => url.includes("/video/upload/");
 
 export const PORTFOLIO_ITEMS: readonly PortfolioItem[] = [
   {
@@ -394,17 +382,18 @@ export const PORTFOLIO_ITEMS: readonly PortfolioItem[] = [
     status: "completed",
   },
   {
-    title: "Borehole Drilling",
-    description: "Borehole drilling and exploration",
-    image: `${IMG}/v1703179926/drilling_pvs4dm.jpg`,
-    alt: "Borehole drilling and exploration",
+    title: "Ongoing Project",
+    description: "Current water engineering project",
     status: "ongoing",
+    ...(ONGOING_PROJECT_MEDIA
+      ? isVideoUrl(ONGOING_PROJECT_MEDIA)
+        ? { video: ONGOING_PROJECT_MEDIA }
+        : { image: ONGOING_PROJECT_MEDIA, alt: "Ongoing Tezeon water engineering project" }
+      : {}),
   },
   {
     title: "Pipe Installation",
     description: "Plumbing and pipe installation",
-    image: `${IMG}/v1703179957/plumbing_eiwbiz.jpg`,
-    alt: "Plumbing and pipe installation",
     status: "coming-soon",
   },
   {
@@ -415,17 +404,8 @@ export const PORTFOLIO_ITEMS: readonly PortfolioItem[] = [
     status: "completed",
   },
   {
-    title: "Industrial Filtration",
-    description: "Industrial water filtration system",
-    image: `${IMG}/v1703180023/water_installation_qiomfk.jpg`,
-    alt: "Industrial water filtration system",
-    status: "ongoing",
-  },
-  {
     title: "Water Stanchion Setup",
     description: "Water stanchion setup",
-    image: `${IMG}/v1703179979/Stansion_vjhu83.jpg`,
-    alt: "Water stanchion setup for estate",
     status: "coming-soon",
   },
   {

@@ -5,8 +5,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import type { NewsletterFormValues } from "@/types";
 
 const newsletterSchema = z.object({
@@ -14,9 +12,9 @@ const newsletterSchema = z.object({
 });
 
 /**
- * Footer newsletter field. The legacy template never wired this form to a
- * backend (`<input>` + `<button>` with no handler), so the migration keeps
- * identical visuals and adds deterministic client-side validation feedback.
+ * Legacy `.footer .newsletter .form` (style.css:2476-2507): 50px input with
+ * the gold-outlined Submit button inset on its right edge. The legacy form
+ * had no backend, so submission is validated client-side and acknowledged.
  */
 export function NewsletterForm() {
   const [subscribed, setSubscribed] = useState(false);
@@ -25,9 +23,7 @@ export function NewsletterForm() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<NewsletterFormValues>({
-    resolver: zodResolver(newsletterSchema),
-  });
+  } = useForm<NewsletterFormValues>({ resolver: zodResolver(newsletterSchema) });
 
   const onSubmit = (): void => {
     setSubscribed(true);
@@ -35,26 +31,30 @@ export function NewsletterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="mt-4 space-y-3">
-      <div className="flex min-w-0 gap-2">
-        <Input
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <div className="relative mx-auto max-w-[400px] max-md:max-w-full">
+        <input
           {...register("email")}
           type="email"
           aria-label="Email address"
+          aria-invalid={errors.email ? "true" : "false"}
           placeholder="Email here"
-          className="h-11 min-w-0 flex-1 rounded-full border-white/20 bg-white/10 pl-5 text-white placeholder:text-white/50 focus:border-primary focus:ring-primary"
+          className="block h-[50px] w-full border-2 border-[#121518] bg-white px-3 py-1.5 text-base text-[#495057] outline-none placeholder:text-[#6c757d] focus:border-[#80bdff]"
         />
-        <Button type="submit" size="sm" className="h-11 shrink-0 px-6 py-0">
+        <button
+          type="submit"
+          className="absolute top-[5px] right-[5px] h-10 border-2 border-primary bg-[#121518] px-2.5 py-2 text-sm leading-normal font-medium text-primary uppercase transition-all duration-300 hover:bg-primary hover:text-[#121518]"
+        >
           Submit
-        </Button>
+        </button>
       </div>
       {errors.email ? (
-        <p role="alert" className="text-xs text-primary">
+        <p role="alert" className="mt-2 text-xs text-primary">
           {errors.email.message}
         </p>
       ) : null}
       {subscribed && !errors.email ? (
-        <p role="status" className="text-xs text-white/70">
+        <p role="status" className="mt-2 text-xs text-white/70">
           Thanks — you&apos;re on the list.
         </p>
       ) : null}

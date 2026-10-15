@@ -33,7 +33,7 @@ export default function ContactPage() {
         title="Contact Us"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Contact Us" },
+          { label: "Contact Us", href: "/contact" },
         ]}
       />
       <ContactSection />

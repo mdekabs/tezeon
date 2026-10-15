@@ -4,72 +4,74 @@ import { Reveal } from "@/components/shared/reveal";
 import { SectionHeader } from "@/components/shared/section-header";
 import { SocialIcon } from "@/components/shared/social-icons";
 import { TEAM_MEMBERS } from "@/lib/data";
+import { cn } from "@/lib/utils";
 import type { SocialLink } from "@/types";
 
-/** Brand colours for the social chips (static map so Tailwind sees every class). */
-const SOCIAL_BACKGROUND: Record<SocialLink["platform"], string> = {
-  twitter: "bg-[#1da1f2]",
-  facebook: "bg-[#1877f2]",
-  linkedin: "bg-[#0a66c2]",
-  instagram: "bg-[#e1306c]",
-  youtube: "bg-[#ff0000]",
-};
+/** Legacy hover colours + stagger per slot (style.css:1328-1350). */
+const SOCIAL_SLOTS = [
+  "group-hover:bg-[#00acee] group-hover:delay-0",
+  "group-hover:bg-[#3b5998] group-hover:delay-100",
+  "group-hover:bg-[#0e76a8] group-hover:delay-200",
+  "group-hover:bg-[#3f729b] group-hover:delay-300",
+] as const;
 
 /**
- * Team grid (`.team`) — legacy spec (style.css:1253-1350):
- * - Section: linear-gradient(155deg, #f5f9ff, #eaeffb 60%, #f0f6ff)
- * - Cards: image 280px (object-position top), text panel navy gradient
- *   `#030f27→#0a1e3d` with gold h2 + white role
- * - Hover: panel flips to gold gradient `#fdbe33→#ffe080`, navy heading
- * - Social icons slide out from behind the card (staggered 0.1s each)
+ * Legacy `.team` grid (style.css:1253-1350, 2681-2685): 280px top-anchored
+ * photo over a navy name panel that flips to gold on hover, while the social
+ * links slide in from the left edge one after another.
  */
 export function Team() {
   return (
-    <section id="team" className="bg-team-gradient pb-[15px] pt-11">
-      <div className="container-x">
+    <section id="team" className="bg-team-gradient relative w-full pt-[45px] pb-[15px]">
+      <div className="container-bs">
         <SectionHeader eyebrow="Our Team" title="Meet Our Engineers" />
 
-        <div className="mt-12 grid gap-x-[30px] gap-y-[30px] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-x-[30px] md:grid-cols-2 lg:grid-cols-4">
           {TEAM_MEMBERS.map((member, index) => (
-            <Reveal key={member.name} delay={index * 0.1}>
-              <article className="group relative h-full overflow-hidden">
-                <div className="relative h-[280px] overflow-hidden">
+            <Reveal key={member.name} delay={(index % 4) * 0.12} duration={0.65} distance={40}>
+              <article className="card-lift touch-bounce group relative mb-[30px] overflow-hidden max-sm:mb-5">
+                <div className="relative">
                   <Image
                     src={member.image}
                     alt={member.alt}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover object-top"
+                    width={255}
+                    height={280}
+                    sizes="(min-width: 992px) 255px, (min-width: 768px) 50vw, 100vw"
+                    className="h-[280px] w-full object-cover object-top"
                   />
                 </div>
-                <div className="bg-dark px-[15px] py-[25px] text-center transition-all duration-500 group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-[#ffe080]">
-                  <h3 className="text-xl font-semibold text-primary transition-all duration-500 group-hover:text-dark group-hover:tracking-[1px]">
+                <div className="relative bg-[linear-gradient(135deg,#030f27_0%,#0a1e3d_100%)] px-[15px] py-[25px] text-center transition-all duration-500 group-hover:bg-[linear-gradient(135deg,#fdbe33_0%,#ffe080_100%)]">
+                  <h2 className="mb-2 text-xl font-semibold text-primary transition-all duration-500 group-hover:tracking-[1px] group-hover:text-dark">
                     {member.name}
-                  </h3>
-                  <p className="mt-1 text-base text-white transition-colors duration-500 group-hover:text-dark">
-                    {member.role}
-                  </p>
+                  </h2>
+                  <p className="m-0 text-white">{member.role}</p>
                 </div>
-                {member.socials ? (
-                  <div className="absolute left-0 top-0 flex flex-col">
-                    {member.socials.map((social, socialIndex) => (
-                      <a
-                        key={social.platform}
-                        href={social.href}
-                        aria-label={`${member.name} on ${social.platform}`}
-                        className={`relative -left-[50px] grid size-[50px] place-items-center text-white transition-all duration-300 group-hover:left-0 ${SOCIAL_BACKGROUND[social.platform]}`}
-                        style={{ transitionDelay: `${socialIndex * 0.1}s` }}
-                      >
-                        <SocialIcon platform={social.platform} />
-                      </a>
-                    ))}
-                  </div>
-                ) : null}
+                {member.socials ? <TeamSocials name={member.name} socials={member.socials} /> : null}
               </article>
             </Reveal>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function TeamSocials({ name, socials }: { name: string; socials: readonly SocialLink[] }) {
+  return (
+    <div className="absolute top-0 -left-[50px] flex w-[100px] flex-col">
+      {socials.map((social, index) => (
+        <a
+          key={social.platform}
+          href={social.href}
+          aria-label={`${name} on ${social.platform}`}
+          className={cn(
+            "relative left-0 flex size-[50px] items-center justify-center text-lg text-white group-hover:left-[50px] group-hover:transition-all group-hover:duration-300",
+            SOCIAL_SLOTS[index % SOCIAL_SLOTS.length],
+          )}
+        >
+          <SocialIcon platform={social.platform} />
+        </a>
+      ))}
+    </div>
   );
 }

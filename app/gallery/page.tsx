@@ -35,7 +35,7 @@ export default function GalleryPage() {
         title="Photo Gallery"
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Photo Gallery" },
+          { label: "Photo Gallery", href: "/gallery" },
         ]}
       />
       <GalleryGrid />

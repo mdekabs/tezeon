@@ -1,4 +1,6 @@
-import type { LucideIcon } from "lucide-react";
+import type { IconType } from "react-icons";
+
+import type { FlaticonName } from "@/components/shared/flaticon";
 
 export interface NavLinkItem {
   label: string;
@@ -6,19 +8,19 @@ export interface NavLinkItem {
 }
 
 export interface TopBarItem {
-  icon: LucideIcon;
+  icon: FlaticonName;
   title: string;
   text: string;
 }
 
 export interface Feature {
-  icon: LucideIcon;
+  icon: FlaticonName;
   title: string;
   description: string;
 }
 
 export interface Stat {
-  icon: LucideIcon;
+  icon: FlaticonName;
   value: number;
   label: string;
 }
@@ -84,9 +86,13 @@ export type PortfolioFilter = "all" | ProjectStatus;
 export interface PortfolioItem {
   title: string;
   description: string;
-  image: string;
-  alt: string;
   status: ProjectStatus;
+  /** Photo (opens in the lightbox). Upcoming projects have none and render "Coming Soon". */
+  image?: string;
+  alt?: string;
+  /** Video (opens in the player modal) — used for client-supplied ongoing project media. */
+  video?: string;
+  poster?: string;
 }
 
 /* --------------------------------------------------------------------------
@@ -100,11 +106,6 @@ export interface ChatMessage {
   role: ChatRole;
   content: string;
   timestamp: number;
-}
-
-export interface ChatQuickReply {
-  id: string;
-  label: string;
 }
 
 /**
@@ -136,14 +137,14 @@ export interface CollageItem {
   image: string;
   alt: string;
   label: string;
-  icon: LucideIcon;
+  icon: IconType;
   /** The first tile spans two rows, mirroring `.collage-tall` in the legacy CSS. */
   tall?: boolean;
 }
 
 export interface Breadcrumb {
   label: string;
-  href?: string;
+  href: string;
 }
 
 export interface ContactFormValues {

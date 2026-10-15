@@ -3,68 +3,80 @@
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
-import { SPRING_TRANSITION } from "@/lib/animations";
-import { useScrollLock } from "@/hooks/use-scroll-lock";
+import { useScrollPosition } from "@/hooks/use-scroll-position";
 import { NAV_LINKS } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
+/** Scroll offsets from legacy script.js (sticky) and animations.js (glass). */
+const STICKY_OFFSET = 90;
+const GLASS_OFFSET = 60;
+
 function isCurrent(pathname: string, href: string): boolean {
-  if (href === "/") {
-    return pathname === "/";
-  }
-  return pathname === href || pathname.startsWith(`${href}/`);
+  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/** Bootstrap 4 `.navbar-dark .navbar-toggler-icon` artwork. */
+function TogglerIcon() {
+  return (
+    <svg viewBox="0 0 30 30" aria-hidden="true" className="size-[1.5em]">
+      <path
+        d="M4 7h22M4 15h22M4 23h22"
+        stroke="rgba(255,255,255,0.5)"
+        strokeLinecap="round"
+        strokeMiterlimit={10}
+        strokeWidth={2}
+      />
+    </svg>
+  );
 }
 
 /**
- * Dark navigation bar (`.nav-bar`) — legacy-exact port:
- * - Cyan `#33d0fd` wrapper behind a navy `#030f27` navbar (style.css:440-462)
- * - STICKY at scrollY > 90px (script.js:23-31): fixed top, max-w 1366px,
- *   shadow `0 2px 5px rgba(0,0,0,.3)`, z-index 999
- * - GLASS at scrollY > 60px (animations.js:156-161 + style.css:3464-3476):
- *   rgba(3,15,39,.65) + blur(20px) saturate(180%) + bottom hairline
- * - Desktop: inline uppercase links, gold active/hover
- * - Mobile: hamburger toggles animated collapse panel, scroll locked
+ * Legacy `.nav-bar` (style.css:440-538, 2777-2789, 3464-3474):
+ * - ≥992px: cyan frame (75px side padding) around a navy navbar with
+ *   left-aligned uppercase links; the "MENU" brand is hidden.
+ * - <992px: "MENU" brand + toggler, links in a collapsible navy panel.
+ * - Fixed to the top past 90px of scroll, frosted glass past 60px. A spacer
+ *   holds the navbar's height so content doesn't jump when it detaches.
  */
 export function MainNav() {
   const pathname = usePathname();
+  const scrollY = useScrollPosition();
   const [open, setOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  const [height, setHeight] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
 
-  useScrollLock(open);
+  const sticky = scrollY > STICKY_OFFSET;
+  const glassed = scrollY > GLASS_OFFSET;
 
-  useEffect(() => {
-    let frame = 0;
-    const onScroll = (): void => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => setScrollY(window.scrollY));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
-    };
+  useLayoutEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return;
+    const observer = new ResizeObserver(() => setHeight(bar.offsetHeight));
+    observer.observe(bar);
+    return () => observer.disconnect();
   }, []);
 
-  const sticky = scrollY > 90;
-  const glassed = scrollY > 60;
-
   return (
-    <div className="relative z-40 bg-cyan transition-[box-shadow] duration-300">
+    <>
       <div
+        ref={barRef}
         className={cn(
-          "bg-dark transition-all duration-300",
+          "relative bg-cyan transition-[background,backdrop-filter,box-shadow] duration-400 lg:px-[75px]",
           sticky &&
-            "fixed left-1/2 top-0 z-50 w-full max-w-[1366px] -translate-x-1/2 shadow-[0_2px_5px_rgba(0,0,0,0.3)]",
-          glassed &&
-            "!bg-[rgba(3,15,39,0.65)] backdrop-blur-[20px] backdrop-saturate-[180%] shadow-[0_4px_30px_rgba(0,0,0,0.22)] border-b border-white/[0.07]",
+            "fixed top-0 left-1/2 z-[999] w-full max-w-[1366px] -translate-x-1/2 shadow-[0_2px_5px_rgba(0,0,0,0.3)] lg:px-0",
         )}
       >
-        <div className="mx-auto flex w-full max-w-[1366px] items-center justify-between px-4 sm:px-6 lg:px-0">
-          <span className="py-4 text-sm font-bold tracking-[0.2em] text-white lg:px-5 lg:py-5">
+        <nav
+          aria-label="Main navigation"
+          className={cn(
+            "flex flex-wrap items-center justify-between bg-dark p-[15px] lg:flex-nowrap lg:justify-start lg:p-5",
+            glassed &&
+              "border-b border-white/[0.07] !bg-[rgba(3,15,39,0.65)] shadow-[0_4px_30px_rgba(0,0,0,0.22)] backdrop-blur-[20px] backdrop-saturate-[180%]",
+          )}
+        >
+          <span className="mr-4 py-[0.3125rem] text-xl leading-normal text-white lg:hidden">
             MENU
           </span>
 
@@ -72,70 +84,74 @@ export function MainNav() {
             type="button"
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
-            aria-controls="mobile-nav-links"
-            aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-11 place-items-center text-white transition-colors hover:text-primary lg:hidden"
+            aria-controls="primary-nav-links"
+            aria-label="Toggle navigation"
+            className="rounded-[0.25rem] border border-white/10 px-3 py-1 text-xl leading-none lg:hidden"
           >
-            {open ? <X className="size-6" aria-hidden="true" /> : <Menu className="size-6" aria-hidden="true" />}
+            <TogglerIcon />
           </button>
 
-          <nav aria-label="Main navigation" className="hidden lg:block">
-            <ul className="flex items-center">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
-                    className={cn(
-                      "block px-[15px] py-5 text-[15px] font-medium uppercase transition-colors",
-                      isCurrent(pathname, link.href)
-                        ? "text-primary"
-                        : "text-white hover:text-primary",
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+          {/* Desktop links */}
+          <ul className="hidden lg:mr-auto lg:flex">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <NavLink href={link.href} label={link.label} active={isCurrent(pathname, link.href)} />
+              </li>
+            ))}
+          </ul>
 
-        <AnimatePresence>
-          {open ? (
-            <motion.div
-              id="mobile-nav-links"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={SPRING_TRANSITION}
-              className="overflow-hidden bg-dark lg:hidden"
-            >
-              <ul className="mx-auto flex w-full max-w-[1366px] flex-col px-4 py-2.5 sm:px-6">
-                {NAV_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      aria-current={isCurrent(pathname, link.href) ? "page" : undefined}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        "block border-b border-white/[0.07] py-2 text-sm font-medium transition-colors last:border-b-0",
-                        isCurrent(pathname, link.href)
-                          ? "text-primary"
-                          : "text-white hover:text-primary",
-                      )}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+          {/* Mobile collapse */}
+          <AnimatePresence initial={false}>
+            {open ? (
+              <motion.div
+                id="primary-nav-links"
+                initial={{ height: 0 }}
+                animate={{ height: "auto" }}
+                exit={{ height: 0 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="w-full basis-full overflow-hidden lg:hidden"
+              >
+                <ul className="bg-dark px-[15px] py-2.5">
+                  {NAV_LINKS.map((link) => (
+                    <li key={link.href} className="border-b border-white/[0.07] last:border-b-0">
+                      <NavLink
+                        href={link.href}
+                        label={link.label}
+                        active={isCurrent(pathname, link.href)}
+                        onNavigate={() => setOpen(false)}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </nav>
       </div>
-      {/* Spacer when sticky so the following content doesn't jump */}
-      {sticky ? <div aria-hidden="true" className="h-0" /> : null}
-    </div>
+      {sticky ? <div aria-hidden="true" style={{ height }} /> : null}
+    </>
+  );
+}
+
+interface NavLinkProps {
+  href: string;
+  label: string;
+  active: boolean;
+  onNavigate?: () => void;
+}
+
+function NavLink({ href, label, active, onNavigate }: NavLinkProps) {
+  return (
+    <Link
+      href={href}
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "block px-[5px] py-2 transition-none hover:text-primary lg:px-2.5 lg:pb-2 lg:pt-2.5 lg:text-[15px] lg:uppercase",
+        active ? "text-primary" : "text-white",
+      )}
+    >
+      {label}
+    </Link>
   );
 }

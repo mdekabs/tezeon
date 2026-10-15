@@ -1,393 +1,228 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------------------
- * Design tokens — LEGACY-EXACT PALETTE
- * Every value below is transcribed directly from tezeon/css/style.css
- * ------------------------------------------------------------------------- */
+/* ==========================================================================
+ * Tezeon — global styles
+ * Values are transcribed from the legacy template (legacy/css/style.css and
+ * legacy/css/chatbot.css); section comments cite the source lines.
+ *
+ *  1. Theme tokens
+ *  2. Keyframes
+ *  3. Utilities (layout, backgrounds, glass)
+ *  4. Base element styles
+ *  5. Component surfaces that need pseudo-elements or media-query modes
+ *  6. Accessibility / motion preferences
+ * ========================================================================== */
+
+/* 1. Theme tokens --------------------------------------------------------- */
+
 @theme {
-  /* Core brand (unchanged) */
-  --color-primary: #fdbe33;
-  --color-primary-strong: #e2a51d;
-  --color-dark: #030f27;
-  --color-dark-soft: #0d1b33;
-  --color-nav: #343a40;
-  --color-body: #555f6e;           /* legacy body text */
-  --color-muted: #666666;
-  --color-light: #f5f5f5;
+  --color-primary: #fdbe33; /* legacy gold */
+  --color-dark: #030f27; /* legacy navy */
+  --color-cyan: #33d0fd; /* top bar, nav frame, page header */
+  --color-body: #555f6e; /* body copy */
 
-  /* Legacy semantic aliases */
-  --color-brand-gold: #fdbe33;
-  --color-brand-gold-hover: #e5aa2d;
-  --color-brand-gold-deep: #c9911e;
-  --color-brand-gold-subtle: rgba(253, 190, 51, 0.12);
-  --color-brand-navy: #030f27;
-  --color-brand-navy-surface: #07193f;
+  /* Bootstrap 4 grid breakpoints used by the legacy template.
+     `max-lg:` therefore equals Bootstrap's `max-width: 991.98px`. */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
 
-  /* Cyan accent used in top-bar, nav wrapper, page-header */
-  --color-cyan: #33d0fd;
-
-  /* Section backgrounds — legacy gradients */
-  --color-body-bg-start: #eef4ff;
-  --color-body-bg-mid: #f5f8ff;
-  --color-body-bg-end: #eaf1fb;
-
-  --color-page-header-start: #33d0fd;
-  --color-page-header-mid: #b7e3ee;
-  --color-page-header-end: #e0eff1;
-
-  --color-faq-bg-start: #edf4ff;
-  --color-faq-bg-mid: #f8fbff;
-  --color-faq-bg-end: #ffffff;
-
-  --color-fact-left-start: #030f27;
-  --color-fact-left-mid: #051a3a;
-  --color-fact-left-end: #0a1e3d;
-
-  --color-fact-right-start: #fdbe33;
-  --color-fact-right-mid: #ffcb4a;
-  --color-fact-right-end: #ffe596;
-
-  --color-feature-navy-start: #030f27;
-  --color-feature-navy-mid: #051a3a;
-  --color-feature-navy-end: #0a1e3d;
-
-  --color-feature-gold-start: #fdbe33;
-  --color-feature-gold-mid: #ffcb4a;
-  --color-feature-gold-end: #ffe080;
-
-  --color-service-bg-start: #f0f7ff;
-  --color-service-bg-mid: #e8f2ff;
-  --color-service-bg-end: #f5f9ff;
-
-  --color-team-bg-start: #f5f9ff;
-  --color-team-bg-mid: #eaeffb;
-  --color-team-bg-end: #f0f6ff;
-
-  --color-testimonial-overlay: rgba(3, 15, 39, 0.9);
-  --color-video-showcase-bg: #030f27;
-
-  /* Preloader palette */
-  --color-preloader-bg-start: #020c20;
-  --color-preloader-bg-mid: #030f27;
-  --color-preloader-bg-end: #0a1e3d;
-  --color-preloader-bubble: rgba(253, 190, 51, 0.1);
-  --color-preloader-drop-start: rgba(175, 230, 255, 0.96);
-  --color-preloader-drop-mid: rgba(40, 130, 230, 0.88);
-  --color-preloader-drop-end: rgba(10, 55, 155, 0.92);
-  --color-preloader-ring-1: rgba(40, 150, 255, 0.7);
-  --color-preloader-ring-2: rgba(110, 185, 255, 0.52);
-  --color-preloader-ring-3: rgba(170, 215, 255, 0.36);
-  --color-preloader-wave-1: rgba(253, 190, 51, 0.07);
-  --color-preloader-wave-2: rgba(30, 100, 220, 0.09);
-
-  /* Gold gradient stops */
-  --color-gold-start: #fdbe33;
-  --color-gold-mid: #e5aa2d;
-  --color-gold-end: #c9911e;
-  --color-gold-deep: #c9911e;
-}
-
-@theme inline {
-  --font-sans: var(--font-poppins), -apple-system, BlinkMacSystemFont,
-    "SF Pro Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-}
-
-/* Global: legacy uses square corners everywhere (22 radius-0 declarations) */
-* {
-  border-radius: 0;
-}
-
-/* Animations — legacy keyframes mapped to Tailwind */
-@theme {
-  --animate-fade-up: fade-up 0.9s ease-out both;
   --animate-fade-in: fade-in 0.9s ease-out both;
-  --animate-slide-in-left: slide-in-left 0.9s ease-out both;
-  --animate-slide-in-right: slide-in-right 0.9s ease-out both;
-  --animate-hero-progress: hero-progress 7s linear forwards;  /* legacy 7s interval */
-  --animate-wave-shift: wave-shift 8s linear infinite;        /* legacy 8s */
-  --animate-wave-shift-reverse: wave-shift-reverse 11s linear infinite; /* legacy 11s reverse */
-  --animate-bubble-rise: bubble-rise-legacy 7.5s linear infinite; /* legacy 6.8-10.5s range */
-  --animate-status-pulse: status-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-pulse-border: pulse-border 1.5s ease-out infinite; /* video modal rings */
-  --animate-shimmer: tez-shimmer 1.4s ease-in-out infinite;    /* gallery shimmer */
+  --animate-hero-progress: hero-progress 7s linear forwards; /* legacy 7s slide */
+  --animate-shimmer: tez-shimmer 1.4s ease-in-out infinite; /* gallery placeholder */
+  --animate-collapse-down: collapse-down 0.35s ease; /* Bootstrap .collapsing */
+  --animate-collapse-up: collapse-up 0.35s ease;
+  --animate-dot-bounce: dot-bounce 1.4s ease-in-out infinite; /* chatbot typing */
 }
 
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Font sizes keep Bootstrap's rhythm instead of Tailwind's paired
+   line-heights: 1.5 for copy, 1.2 inside headings (see base layer).
+   `inline` makes each utility resolve the variable on its own element. */
+@theme inline {
+  --text-xs--line-height: var(--bs-line-height);
+  --text-sm--line-height: var(--bs-line-height);
+  --text-base--line-height: var(--bs-line-height);
+  --text-lg--line-height: var(--bs-line-height);
+  --text-xl--line-height: var(--bs-line-height);
+  --text-2xl--line-height: var(--bs-line-height);
+  --font-sans: var(--font-poppins), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    ui-sans-serif, system-ui, sans-serif;
 }
+
+/* 2. Keyframes ------------------------------------------------------------ */
+
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-@keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-50px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(50px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
+
 @keyframes hero-progress {
   from { width: 0%; }
   to   { width: 100%; }
 }
-@keyframes wave-shift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-@keyframes wave-shift-reverse {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
+
+@keyframes collapse-down {
+  from { height: 0; }
+  to   { height: var(--radix-accordion-content-height); }
 }
 
-/* Legacy bubble rise: -110vh over 6.8-10.5s, opacity 0→0.6→0.25→0 */
-@keyframes bubble-rise-legacy {
-  0%   { transform: translateY(0) scale(1);     opacity: 0; }
-  10%  { opacity: 0.6; }
-  85%  { opacity: 0.25; }
-  100% { transform: translateY(-110vh) scale(0.65); opacity: 0; }
+@keyframes collapse-up {
+  from { height: var(--radix-accordion-content-height); }
+  to   { height: 0; }
 }
-@keyframes status-pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.35; }
+
+@keyframes dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%           { transform: translateY(-6px); opacity: 0.9; }
 }
+
 @keyframes pulse-border {
   0%   { transform: translateX(-50%) translateY(-50%) scale(1); opacity: 1; }
   100% { transform: translateX(-50%) translateY(-50%) scale(1.5); opacity: 0; }
 }
+
+@keyframes tez-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(253, 190, 51, 0.45); }
+  70%  { box-shadow: 0 0 0 14px rgba(253, 190, 51, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(253, 190, 51, 0); }
+}
+
 @keyframes tez-shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Legacy page-load entrance animations */
 @keyframes tez-slide-down {
   from { opacity: 0; transform: translateY(-24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes tez-fade-up {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes tez-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-/* ============================================
-   LEGACY SECTION BACKGROUNDS (utility classes)
-   ============================================ */
-@utility bg-body-gradient {
-  background: linear-gradient(160deg, var(--color-body-bg-start) 0%, var(--color-body-bg-mid) 50%, var(--color-body-bg-end) 100%);
-  background-attachment: fixed;
+/* 3. Utilities ------------------------------------------------------------ */
+
+/* Bootstrap `.container` — fixed max-widths per breakpoint, 15px gutters */
+@utility container-bs {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 15px;
+  @media (width >= 576px) { max-width: 540px; }
+  @media (width >= 768px) { max-width: 720px; }
+  @media (width >= 992px) { max-width: 960px; }
+  @media (width >= 1200px) { max-width: 1140px; }
 }
+
+/* Bootstrap `.container-fluid` — full width, 15px gutters */
+@utility container-fluid {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 15px;
+}
+
+/* Section backgrounds */
 @utility bg-page-header-gradient {
-  background: linear-gradient(135deg, var(--color-page-header-start) 0%, var(--color-page-header-mid) 50%, var(--color-page-header-end) 100%);
-}
-@utility bg-faq-gradient {
-  background: linear-gradient(180deg, var(--color-faq-bg-start) 0%, var(--color-faq-bg-mid) 50%, var(--color-faq-bg-end) 100%);
-}
-@utility bg-fact-left-gradient {
-  background: linear-gradient(135deg, var(--color-fact-left-start) 0%, var(--color-fact-left-mid) 55%, var(--color-fact-left-end) 100%);
-}
-@utility bg-fact-right-gradient {
-  background: linear-gradient(135deg, var(--color-fact-right-start) 0%, var(--color-fact-right-mid) 55%, var(--color-fact-right-end) 100%);
+  background: linear-gradient(135deg, #33d0fd 0%, #b7e3ee 50%, #e0eff1 100%);
 }
 @utility bg-feature-navy-gradient {
-  background: linear-gradient(135deg, var(--color-feature-navy-start) 0%, var(--color-feature-navy-mid) 55%, var(--color-feature-navy-end) 100%);
+  background: linear-gradient(135deg, #030f27 0%, #051a3a 55%, #0a1e3d 100%);
 }
 @utility bg-feature-gold-gradient {
-  background: linear-gradient(135deg, var(--color-feature-gold-start) 0%, var(--color-feature-gold-mid) 50%, var(--color-feature-gold-end) 100%);
-}
-@utility bg-service-gradient {
-  background: linear-gradient(160deg, var(--color-service-bg-start) 0%, var(--color-service-bg-mid) 60%, var(--color-service-bg-end) 100%);
-}
-@utility bg-team-gradient {
-  background: linear-gradient(155deg, var(--color-team-bg-start) 0%, var(--color-team-bg-mid) 60%, var(--color-team-bg-end) 100%);
+  background: linear-gradient(135deg, #fdbe33 0%, #ffcb4a 50%, #ffe080 100%);
 }
 @utility bg-about-gradient {
   background: linear-gradient(180deg, #ffffff 0%, #edf4ff 100%);
 }
-@utility bg-footer-gradient {
-  background: linear-gradient(160deg, var(--color-dark) 0%, #051a3a 50%, #0a1e3d 100%);
+@utility bg-fact-left-gradient {
+  background: linear-gradient(135deg, #030f27 0%, #051a3a 55%, #0a1e3d 100%);
 }
-@utility bg-contact-form-gradient {
-  background: linear-gradient(135deg, var(--color-dark) 0%, #0a1e3d 100%);
+@utility bg-fact-right-gradient {
+  background: linear-gradient(135deg, #fdbe33 0%, #ffcb4a 55%, #ffe596 100%);
+}
+@utility bg-service-gradient {
+  background: linear-gradient(160deg, #f0f7ff 0%, #e8f2ff 60%, #f5f9ff 100%);
+}
+@utility bg-team-gradient {
+  background: linear-gradient(155deg, #f5f9ff 0%, #eaeffb 60%, #f0f6ff 100%);
+}
+@utility bg-faq-gradient {
+  background: linear-gradient(180deg, #edf4ff 0%, #f8fbff 50%, #ffffff 100%);
+}
+@utility bg-footer-gradient {
+  background: linear-gradient(160deg, #030f27 0%, #051a3a 50%, #0a1e3d 100%);
 }
 @utility bg-video-showcase {
-  background: linear-gradient(rgba(5, 25, 63, 0.788), rgba(34, 52, 88, 0.673)), url('https://res.cloudinary.com/dxd3nmbag/image/upload/v1755441476/waterlog_lnxqbb.png');
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-@utility bg-testimonial {
-  background: linear-gradient(var(--color-testimonial-overlay), var(--color-testimonial-overlay)), url('https://res.cloudinary.com/dxd3nmbag/image/upload/v1703285075/drilling_cux1bb.jpg');
+  background:
+    linear-gradient(rgba(5, 25, 63, 0.788), rgba(34, 52, 88, 0.673)),
+    url("https://res.cloudinary.com/dxd3nmbag/image/upload/v1755441476/waterlog_lnxqbb.png");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-/* ============================================
-   GLASSMORPHISM UTILITIES (legacy spec)
-   ============================================ */
-@utility glass-panel {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow:
-    0 8px 32px 0 rgba(3, 15, 39, 0.08),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
-}
-@utility glass-panel-dark {
-  background: rgba(3, 15, 39, 0.75);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 8px 32px 0 rgba(3, 15, 39, 0.28),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
-}
-@utility glass-nav {
-  background: rgba(3, 15, 39, 0.65);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.22);
-}
-@utility glass-overlay {
-  background: rgba(3, 15, 39, 0.42);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-@utility glass-overlay-strong {
-  background: rgba(3, 15, 39, 0.7);
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-}
+/* Glass treatments */
 @utility glass-label {
+  border: 1px solid rgba(255, 255, 255, 0.32);
   background: rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.32);
 }
 @utility glass-sub-label {
-  background: rgba(253, 190, 51, 0.10);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   border: 1px solid rgba(253, 190, 51, 0.28);
   border-radius: 20px;
-}
-@utility glass-scrumb {
-  background: linear-gradient(to top, rgba(3,15,39,0.55) 0%, transparent 55%);
-}
-
-/* ============================================
-   HAIRLINE DIVIDER (footer menu)
-   ============================================ */
-@utility hairline-divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-}
-@utility hairline-divider-white-10 {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
-@utility hairline-divider-gold {
-  width: 1px;
-  height: 100%;
-  background: var(--color-primary);
+  background: rgba(253, 190, 51, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
-/* ============================================
-   CONTAINER UTILITY (legacy .wrapper max-width 1366px)
-   ============================================ */
-@utility container-x {
-  margin-inline: auto;
-  width: 100%;
-  max-width: 85rem; /* 1360px ≈ legacy 1366px */
-  padding-inline: 1rem;
-  @media (width >= 640px) { padding-inline: 1.5rem; }
-  @media (width >= 1024px) { padding-inline: 2rem; }
-}
-
-/* ============================================
-   BTN BASE (square, legacy .btn)
-   ============================================ */
-@utility btn-base {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.75rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease;
-  border-radius: 0;
-}
-@utility btn-primary {
-  background: linear-gradient(90deg, var(--color-gold-start) 0%, var(--color-gold-mid) 50%, var(--color-gold-end) 100%);
-  color: var(--color-dark);
-  box-shadow: 0 4px 16px 0 rgba(253, 190, 51, 0.35);
-  &:hover {
-    background: linear-gradient(90deg, var(--color-gold-mid) 0%, var(--color-gold-end) 50%, var(--color-gold-deep) 100%);
-    box-shadow: 0 6px 20px 0 rgba(253, 190, 51, 0.45);
-    transform: translateY(-2px);
-  }
-}
-@utility btn-outline {
-  border: 2px solid var(--color-primary);
-  background: transparent;
-  color: var(--color-dark);
-  &:hover {
-    background: var(--color-primary);
-    color: var(--color-dark);
-  }
-}
-@utility btn-outline-light {
-  border: 2px solid var(--color-primary);
-  background: transparent;
-  color: white;
-  &:hover {
-    background: var(--color-primary);
-    color: var(--color-dark);
-  }
-}
-@utility btn-dark {
-  background: var(--color-dark);
-  color: white;
-  &:hover {
-    background: var(--color-primary);
-    color: var(--color-dark);
-  }
-}
-@utility btn-square-lg {
-  width: 3.75rem; /* 60px */
-  height: 3.75rem;
-  padding: 0;
-  font-size: 3.75rem; /* 60px */
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* 4. Base element styles -------------------------------------------------- */
 
 @layer base {
   html {
     scroll-behavior: smooth;
   }
 
+  /* Legacy `body`: soft blue gradient visible outside the 1366px wrapper */
   body {
-    background-color: #ffffff;
+    --bs-line-height: 1.5;
+    background: linear-gradient(160deg, #eef4ff 0%, #f5f8ff 50%, #eaf1fb 100%);
+    background-attachment: fixed;
     color: var(--color-body);
     font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: var(--bs-line-height);
+  }
+
+  /* Bootstrap heading defaults + legacy navy heading colour */
+  h1, h2, h3, h4, h5, h6 {
+    --bs-line-height: 1.2;
+    color: var(--color-dark);
+    font-weight: 500;
+    line-height: var(--bs-line-height);
+  }
+
+  /* Legacy link colours */
+  a {
+    color: #666666;
+    transition: 0.3s;
+  }
+  a:hover,
+  a:focus {
+    color: var(--color-primary);
+  }
+
+  button {
+    cursor: pointer;
   }
 
   ::selection {
@@ -401,56 +236,14 @@
   }
 }
 
-/* Honour OS-level motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
+/* 5. Component surfaces --------------------------------------------------- */
+
+/* Video hero — `.vid-hero` (style.css:3169-3457). Plain CSS because the
+   carousel (<992px) and three-panel (≥992px) modes swap layout models. */
+.hero-slide {
+  transition: opacity 800ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Apple: respond on pointer-down, not release — instant press feedback.
-   transform/opacity are compositor-friendly and never affect layout. */
-@media (prefers-reduced-motion: no-preference) {
-  button:active,
-  a:active {
-    transform: scale(0.97);
-  }
-}
-
-/* Apple: respect reduced-transparency — frost glass surfaces solid. */
-@media (prefers-reduced-transparency: reduce) {
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  .glass-panel-dark {
-    background: rgba(3, 15, 39, 0.97);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-
-/* HiDPI-safe crisp hairlines used by glass surfaces */
-@media (prefers-contrast: more) {
-  .glass-panel {
-    background: #ffffff;
-    backdrop-filter: none;
-    border-color: #030f27;
-  }
-  .glass-panel-dark {
-    background: #030f27;
-    border-color: rgba(255, 255, 255, 0.6);
-  }
-}
-
-/* --------------------------------------------------------------------------
- * Hero parity — the legacy site uses a responsive carousel on small screens
- * and three expanding video panels on desktop.
- * ------------------------------------------------------------------------ */
 .hero-overlay {
   z-index: 1;
   background: linear-gradient(
@@ -463,26 +256,27 @@
 
 .hero-cta {
   display: inline-block;
+  padding: 13px 36px;
   border-radius: 50px;
   background: #fdbe33;
   color: #030f27;
-  padding: 13px 36px;
   font-size: 15px;
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 6px 28px rgba(253, 190, 51, 0.45);
-  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease,
-    transform 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.hero-cta:hover {
+.hero-cta:hover,
+.hero-cta:focus {
   background: #ffffff;
   color: #030f27;
   box-shadow: 0 10px 36px rgba(255, 255, 255, 0.18);
   transform: translateY(-2px);
 }
 
-.hero-cta-outline {
+.hero-cta-outline,
+.hero-cta-outline:focus {
   border: 2px solid rgba(255, 255, 255, 0.6);
   background: transparent;
   color: #ffffff;
@@ -494,15 +288,77 @@
   color: #ffffff;
 }
 
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transform: translateY(-50%);
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-arrow:hover {
+  background: rgba(253, 190, 51, 0.75);
+  color: #030f27;
+  box-shadow: 0 6px 28px rgba(253, 190, 51, 0.4);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: background 0.3s ease, width 0.35s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.35s ease;
+}
+
+.hero-dot-active {
+  width: 26px;
+  border-radius: 4px;
+  background: #fdbe33;
+}
+
+@media (max-width: 767.98px) {
+  .hero-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  .hero-cta {
+    padding: 11px 26px;
+    font-size: 14px;
+  }
+}
+
 @media (min-width: 992px) {
+  .hero-slides {
+    display: flex;
+    flex-direction: row;
+  }
+
   .hero-slide {
     position: relative !important;
     inset: auto !important;
-    z-index: 2;
+    z-index: 2 !important;
     flex: 1;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    overflow: hidden;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 1 !important;
     transition: flex 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -518,20 +374,416 @@
     display: none;
   }
 
-  .hero-control,
-  .hero-slides + .hero-control {
-    display: none;
+  .hero-control {
+    display: none !important;
+  }
+}
+
+/* `.feature .feature-item` glass edge (style.css:3123-3135, 3482-3487) */
+.feature-card {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+/* `.service .service-overlay` frosted glass (style.css:3490-3495) */
+.service-overlay {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(3, 15, 39, 0.38);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+}
+
+/* Card hover lift — GSAP y:-7 on enter, elastic settle on leave
+   (animations.js initCardHover) */
+@media (hover: hover) {
+  .card-lift {
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-7px);
+    transition-duration: 0.32s;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
+
+/* `.video .btn-play` rings (style.css:1129-1157): pulsing ring under a static disc */
+.play-button::before,
+.play-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.play-button::before {
+  z-index: 0;
+  animation: pulse-border 1500ms ease-out infinite;
+}
+
+.play-button::after {
+  z-index: 1;
+  transition: all 200ms;
+}
+
+/* Fixed backgrounds are broken on iOS and janky on phones (style.css:2582-2593) */
+@supports (-webkit-touch-callout: none) {
+  .bg-video-showcase {
+    background-attachment: scroll;
   }
 }
 
 @media (max-width: 767.98px) {
-  .hero-control {
-    width: 40px;
-    height: 40px;
+  .bg-video-showcase {
+    background-attachment: scroll;
+  }
+}
+
+/* `.collage-item` shadow + readability scrim (style.css:2986-3026, 3102) */
+.collage-item {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.35s ease;
+}
+
+.collage-item:hover {
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
+}
+
+.collage-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(3, 15, 39, 0.55) 0%, transparent 55%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.collage-item:hover::after {
+  opacity: 1;
+}
+
+.collage-label {
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 767.98px) {
+  .collage-item::after {
+    opacity: 1;
+  }
+}
+
+/* Gallery image shimmer placeholder + pulsing play disc (style.css:2874-2918) */
+.shimmer-bg {
+  background: linear-gradient(90deg, #ececec 25%, #dddddd 50%, #ececec 75%);
+  background-size: 200% 100%;
+}
+
+.gallery-play {
+  animation: tez-pulse-ring 2s ease-out infinite;
+}
+
+.group:hover .gallery-play {
+  animation: none;
+  box-shadow: 0 0 0 14px rgba(255, 255, 255, 0.12);
+}
+
+/* `.contact .contact-item` glass card on navy (style.css:3509-3521) */
+.contact-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.contact-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-3px);
+}
+
+/* "Teza" chatbot launcher + popup (legacy css/chatbot.css) */
+.chat-toggler {
+  background: linear-gradient(135deg, #030f27 0%, #0a1e3d 100%);
+  box-shadow: 0 4px 24px rgba(3, 15, 39, 0.5);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.chat-toggler::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, rgba(253, 190, 51, 0.18) 0%, transparent 58%);
+  pointer-events: none;
+}
+
+.chat-toggler:hover {
+  box-shadow: 0 6px 32px rgba(3, 15, 39, 0.55), 0 0 0 6px rgba(253, 190, 51, 0.15);
+  transform: scale(1.1);
+}
+
+.chat-popup {
+  box-shadow:
+    0 12px 60px rgba(3, 15, 39, 0.22),
+    0 2px 16px rgba(3, 15, 39, 0.1),
+    0 0 0 1px rgba(3, 15, 39, 0.06);
+  transition:
+    opacity 0.24s ease,
+    translate 0.24s cubic-bezier(0.34, 1.56, 0.64, 1),
+    scale 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chat-body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(3, 15, 39, 0.12) transparent;
+}
+
+.chat-input {
+  scrollbar-width: none;
+}
+
+/* Home preloader `#tez-preloader` (style.css:47-279) */
+
+.preloader-root {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(155deg, #020c20 0%, #030f27 40%, #061530 70%, #0a1e3d 100%);
+  will-change: transform;
+}
+
+/* Radial gold glow at centre */
+.preloader-root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 65% 55% at 50% 44%, rgba(253, 190, 51, 0.09) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* Ambient floating bubbles */
+.preloader-ambient {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.preloader-bubble {
+  position: absolute;
+  bottom: -22px;
+  border: 1px solid rgba(253, 190, 51, 0.18);
+  border-radius: 50%;
+  background: rgba(253, 190, 51, 0.1);
+  animation: preloader-bubble-float linear infinite;
+}
+
+@keyframes preloader-bubble-float {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  10%  { opacity: 0.6; }
+  85%  { opacity: 0.25; }
+  100% { transform: translateY(-110vh) scale(0.65); opacity: 0; }
+}
+
+.preloader-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.preloader-logo-wrap {
+  position: relative;
+  display: block;
+}
+
+.preloader-logo {
+  display: block;
+  width: 100px;
+  height: auto;
+  margin: 0 auto;
+  filter: drop-shadow(0 0 18px rgba(253, 190, 51, 0.55));
+}
+
+/* Teardrops — GSAP owns transform, so centring uses margin-left */
+.preloader-drop {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 14px;
+  height: 20px;
+  margin-left: -7px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(
+    ellipse at 38% 28%,
+    rgba(175, 230, 255, 0.96) 0%,
+    rgba(40, 130, 230, 0.88) 50%,
+    rgba(10, 55, 155, 0.92) 100%
+  );
+  opacity: 0;
+  filter: drop-shadow(0 3px 8px rgba(0, 140, 255, 0.55));
+  transform-origin: center top;
+}
+
+.preloader-drop-small {
+  bottom: -3px;
+  left: calc(50% + 11px);
+  width: 9px;
+  height: 13px;
+  margin-left: 0;
+}
+
+/* Dual-layer name: dim base + gold fill rising from the bottom */
+.preloader-name-wrap {
+  position: relative;
+  display: inline-block;
+  margin: 26px 0 0;
+  line-height: 1;
+}
+
+.preloader-name-base,
+.preloader-name-fill {
+  display: block;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+
+.preloader-name-base {
+  color: rgba(255, 255, 255, 0.14);
+}
+
+.preloader-name-fill {
+  position: absolute;
+  inset: 0;
+  color: #fdbe33;
+  text-shadow: 0 0 24px rgba(253, 190, 51, 0.48);
+  clip-path: inset(100% 0% 0% 0%);
+}
+
+/* Ripple pool where the drop lands */
+.preloader-ripple-pool {
+  position: relative;
+  width: 220px;
+  height: 38px;
+  margin: 8px auto 0;
+}
+
+.preloader-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(40, 150, 255, 0.7);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.preloader-ring:nth-child(2) { border-color: rgba(110, 185, 255, 0.52); }
+.preloader-ring:nth-child(3) { border-color: rgba(170, 215, 255, 0.36); }
+
+.preloader-tagline {
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.preloader-bar-wrap {
+  margin-top: 28px;
+}
+
+.preloader-bar {
+  width: 200px;
+  height: 2px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.preloader-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #fdbe33 0%, #ffe080 100%);
+  transition: width 1.85s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Rolling SVG waves (two periods wide for a seamless loop) */
+.preloader-waves {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 90px;
+  pointer-events: none;
+}
+
+.preloader-waves svg {
+  display: block;
+  width: 200%;
+  height: 100%;
+  animation: preloader-wave-roll 8s linear infinite;
+}
+
+.preloader-wave-front { fill: rgba(253, 190, 51, 0.07); }
+
+.preloader-wave-back {
+  fill: rgba(30, 100, 220, 0.09);
+  animation: preloader-wave-roll 11s linear infinite reverse;
+}
+
+@keyframes preloader-wave-roll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 6. Accessibility / motion preferences ----------------------------------- */
+
+/* Legacy touch bounce (style.css:3553-3558) — touch devices only */
+@media (hover: none) and (pointer: coarse) {
+  .touch-bounce:active {
+    transform: scale(0.97);
   }
 
-  .hero-cta {
-    padding: 11px 26px;
-    font-size: 14px;
+  .hero-arrow:active {
+    transform: translateY(-50%) scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

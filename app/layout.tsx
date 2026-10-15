@@ -88,20 +88,24 @@ const STRUCTURED_DATA = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${poppins.variable} h-full`}>
-      <body className="flex min-h-full flex-col font-sans">
+      <body className="font-sans">
         <MotionProvider>
-        <script
-          type="application/ld+json"
-          // Static, code-owned JSON — no untrusted input passes through here.
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(STRUCTURED_DATA).replace(/</g, "\\u003c"),
-          }}
-        />
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <BackToTop />
-        <Chatbot />
+          <script
+            type="application/ld+json"
+            // Static, code-owned JSON — no untrusted input passes through here.
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(STRUCTURED_DATA).replace(/</g, "\\u003c"),
+            }}
+          />
+          {/* Legacy `.wrapper`: centred 1366px white page over the body gradient.
+              `clip` (not `hidden`) so off-screen reveal animations can never scroll it sideways. */}
+          <div className="relative mx-auto w-full max-w-[1366px] overflow-x-clip bg-white">
+            <SiteHeader />
+            <main>{children}</main>
+            <SiteFooter />
+            <BackToTop />
+          </div>
+          <Chatbot />
         </MotionProvider>
       </body>
     </html>
