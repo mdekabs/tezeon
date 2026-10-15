@@ -1,35 +1,78 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef, useState } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
-import { VideoModal } from "@/components/shared/video-modal";
 import { SHOWCASE_VIDEO } from "@/lib/data";
 
+/** Fraction of the section that must stay visible before the player closes. */
+const CLOSE_BELOW_VISIBLE_RATIO = 0.25;
+
 /**
- * Legacy `.video` teaser (style.css:159-174, 1099-1191, 2581-2593):
- * fixed-background navy section with the "Watch This Space" caption laid
- * across it. The pulsing gold play button sits in front of the caption and is
- * fully opaque (client request; legacy rendered it at 60% behind the text).
- * The background drifts from 50% to 70% while scrolling (initParallax).
+ * Ongoing-project teaser — legacy `.video` (style.css:159-174, 1099-1191,
+ * 2581-2593): fixed-background navy band with the "Watch This Space" caption
+ * and a pulsing gold play button in front of it (client request).
+ *
+ * The clip plays inline inside the section (client request, replacing the
+ * legacy modal) and closes itself — paused and unloaded — as soon as the
+ * section is scrolled out of view, or on Escape / the close button.
  */
 export function VideoShowcase() {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const [playing, setPlaying] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const playButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
   const backgroundPositionY = useTransform(scrollYProgress, [0, 1], ["50%", "70%"]);
+
+  /* Auto-close when the section leaves the viewport; Escape closes too. */
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!playing || !section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio < CLOSE_BELOW_VISIBLE_RATIO) setPlaying(false);
+      },
+      { threshold: [0, CLOSE_BELOW_VISIBLE_RATIO] },
+    );
+    observer.observe(section);
+
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") setPlaying(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [playing]);
+
+  /* Start playback as soon as the player mounts. */
+  useEffect(() => {
+    if (playing) videoRef.current?.play().catch(() => undefined);
+  }, [playing]);
+
+  const close = (): void => {
+    setPlaying(false);
+    playButtonRef.current?.focus({ preventScroll: true });
+  };
 
   return (
     <motion.section
-      ref={ref}
+      ref={sectionRef}
+      aria-label="Ongoing project"
       style={{ backgroundPositionY }}
       className="bg-video-showcase relative my-[45px] h-full min-h-[500px] overflow-hidden"
     >
       <button
+        ref={playButtonRef}
         type="button"
-        aria-label="Play ongoing project video"
-        onClick={() => setOpen(true)}
-        className="play-button absolute top-1/2 left-1/2 z-[2] block h-11 w-8 -translate-1/2 rounded-full pt-[18px] pr-5 pb-[18px] pl-7 outline-none box-content"
+        aria-label={`Play video: ${SHOWCASE_VIDEO.title}`}
+        onClick={() => setPlaying(true)}
+        className="play-button absolute top-1/2 left-1/2 z-[2] box-content block h-11 w-8 -translate-1/2 rounded-full pt-[18px] pr-5 pb-[18px] pl-7 outline-none"
       >
         <span
           aria-hidden="true"
@@ -41,13 +84,40 @@ export function VideoShowcase() {
         {SHOWCASE_VIDEO.caption}
       </p>
 
-      <VideoModal
-        open={open}
-        onOpenChange={setOpen}
-        src={SHOWCASE_VIDEO.src}
-        poster={SHOWCASE_VIDEO.poster}
-        title="Ongoing project preview"
-      />
+      <AnimatePresence>
+        {playing ? (
+          <motion.div
+            key="player"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 z-[5] bg-black"
+          >
+            <video
+              ref={videoRef}
+              src={SHOWCASE_VIDEO.src}
+              poster={SHOWCASE_VIDEO.poster}
+              controls
+              playsInline
+              preload="metadata"
+              aria-label={SHOWCASE_VIDEO.title}
+              className="size-full object-contain"
+            />
+            <p className="pointer-events-none absolute top-4 left-5 m-0 max-w-[70%] text-sm font-medium text-white/90 [text-shadow:0_1px_6px_rgba(0,0,0,0.7)]">
+              {SHOWCASE_VIDEO.title}
+            </p>
+            <button
+              type="button"
+              aria-label="Close video"
+              onClick={close}
+              className="absolute top-3 right-3 flex size-[30px] items-center justify-center bg-[#00000079] text-[30px] leading-none text-white transition-colors hover:text-primary"
+            >
+              &times;
+            </button>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </motion.section>
   );
 }

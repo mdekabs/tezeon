@@ -48,6 +48,9 @@ export const LOCAL_SITE_VIDEO = "/assets/site-video-1.mp4";
 
 const IMG = "https://res.cloudinary.com/dxd3nmbag/image/upload";
 const VID = "https://res.cloudinary.com/dxd3nmbag/video/upload";
+/** Newer client uploads live on a second Cloudinary account. */
+const CLIENT_IMG = "https://res.cloudinary.com/dodf7s2r2/image/upload";
+const CLIENT_VID = "https://res.cloudinary.com/dodf7s2r2/video/upload";
 
 /* --------------------------------------------------------------------------
  * Navigation & chrome
@@ -185,9 +188,15 @@ export const SERVICES: readonly Service[] = [
   },
 ];
 
+/** Client-supplied footage of the current ongoing project (Cloudinary). */
+const ONGOING_PROJECT_ASSET = "v1792072848/ongoing_track01_ekcifm";
+
 export const SHOWCASE_VIDEO = {
-  src: "https://res.cloudinary.com/dodf7s2r2/video/upload/f_mp4/v1782215493/IMG_6785_yxakfa.mp4",
-  poster: COMPANY.logo,
+  title: "Water Reticulation — Orange Island, Lagos",
+  /* q_auto + 1280px width: ~6 MB instead of the 50 MB original upload. */
+  src: `${CLIENT_VID}/q_auto,w_1280/${ONGOING_PROJECT_ASSET}.mp4`,
+  /* Cloudinary renders a poster frame when the extension is .jpg. */
+  poster: `${CLIENT_VID}/${ONGOING_PROJECT_ASSET}.jpg`,
   caption: "Watch This Space For Our Ongoing Project",
 } as const;
 
@@ -364,15 +373,6 @@ export const PORTFOLIO_BLUR: Record<string, string> = {
     "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAWABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQCBQb/xAAdEAACAgIDAQAAAAAAAAAAAAABAgADBBESITET/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAWEQEBAQAAAAAAAAAAAAAAAAAAASH/2gAMAwEAAhEDEQA/AHk+S3ctgGOravgMzFOYC2mJ5b6j2PcxyANwuGK/IoRGDKO5DGvsXI3vyEJKn//Z",
 };
 
-/**
- * Media for the ongoing project, supplied by the client (Cloudinary).
- * Paste the URL here — image or video (`/video/upload/` URLs play in the modal).
- * Until it is set the ongoing card shows a "Coming Soon" frame.
- */
-export const ONGOING_PROJECT_MEDIA: string | null = null;
-
-const isVideoUrl = (url: string): boolean => url.includes("/video/upload/");
-
 export const PORTFOLIO_ITEMS: readonly PortfolioItem[] = [
   {
     title: "Home Water System",
@@ -382,14 +382,25 @@ export const PORTFOLIO_ITEMS: readonly PortfolioItem[] = [
     status: "completed",
   },
   {
-    title: "Ongoing Project",
-    description: "Current water engineering project",
+    title: SHOWCASE_VIDEO.title,
+    description: "Water reticulation network for Orange Island, Lagos",
     status: "ongoing",
-    ...(ONGOING_PROJECT_MEDIA
-      ? isVideoUrl(ONGOING_PROJECT_MEDIA)
-        ? { video: ONGOING_PROJECT_MEDIA }
-        : { image: ONGOING_PROJECT_MEDIA, alt: "Ongoing Tezeon water engineering project" }
-      : {}),
+    video: SHOWCASE_VIDEO.src,
+    poster: SHOWCASE_VIDEO.poster,
+    photos: [
+      {
+        src: `${CLIENT_IMG}/v1792073771/IMG-20261012-WA0057_ms0q2v.jpg`,
+        alt: "Water reticulation works at Orange Island, Lagos",
+      },
+      {
+        src: `${CLIENT_IMG}/v1792073769/IMG-20261012-WA0058_t5g1uj.jpg`,
+        alt: "Pipe network installation at Orange Island, Lagos",
+      },
+      {
+        src: `${CLIENT_IMG}/v1792073768/IMG-20261012-WA0033_hxmml1.jpg`,
+        alt: "Tezeon crew on the Orange Island reticulation site",
+      },
+    ],
   },
   {
     title: "Pipe Installation",

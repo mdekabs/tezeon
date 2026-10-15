@@ -93,6 +93,13 @@ export interface PortfolioItem {
   /** Video (opens in the player modal) — used for client-supplied ongoing project media. */
   video?: string;
   poster?: string;
+  /** Site photos shown with the project (client-supplied, Cloudinary). */
+  photos?: readonly ProjectPhoto[];
+}
+
+export interface ProjectPhoto {
+  src: string;
+  alt: string;
 }
 
 /* --------------------------------------------------------------------------

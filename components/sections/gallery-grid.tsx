@@ -81,7 +81,6 @@ export function GalleryGrid() {
       </div>
 
       <VideoModal
-        variant="gallery"
         open={video !== null}
         onOpenChange={(open) => !open && setVideo(null)}
         src={video?.video ?? null}
